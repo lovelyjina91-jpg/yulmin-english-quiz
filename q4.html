@@ -8,6 +8,7 @@
   :root{
     --bg:#0f172a; --card:#1e293b; --card2:#243149; --accent:#38bdf8; --accent2:#22d3ee;
     --good:#22c55e; --bad:#f43f5e; --txt:#e2e8f0; --sub:#94a3b8; --line:#334155;
+    --help:#facc15;
   }
   *{box-sizing:border-box;}
   body{margin:0; background:linear-gradient(160deg,#0f172a,#111c33); color:var(--txt);
@@ -20,7 +21,6 @@
   .sub{color:var(--sub); font-size:14px;}
   .card{background:var(--card); border:1px solid var(--line); border-radius:18px;
     padding:22px; box-shadow:0 14px 40px rgba(0,0,0,.35);}
-  /* start */
   .field{margin:14px 0;}
   .field label{display:block; font-size:14px; color:var(--sub); margin-bottom:6px;}
   input.name{width:100%; padding:13px 14px; border-radius:12px; border:1px solid var(--line);
@@ -32,20 +32,26 @@
   .btn:active{transform:scale(.98);}
   .btn.ghost{background:#334155; color:var(--txt);}
   .hint{font-size:12.5px; color:var(--sub); text-align:center; margin-top:12px; line-height:1.7;}
-  .hint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
+  .hint kbd, .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
     border-radius:6px; padding:1px 7px; font-size:11.5px; color:var(--accent);}
-  /* progress */
   .pbar{height:8px; background:#0b1426; border-radius:99px; overflow:hidden; margin-bottom:16px;}
   .pfill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0;
     transition:width .3s;}
   .qmeta{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
   .qno{font-weight:800; color:var(--accent); font-size:14px;}
   .qtype{font-size:12px; color:var(--sub); background:#0b1426; padding:3px 10px; border-radius:99px;}
-  .qtext{font-size:18px; line-height:1.55; margin:6px 0 18px; font-weight:600; white-space:pre-wrap;}
+  .qtext{font-size:18px; line-height:1.55; margin:6px 0 12px; font-weight:600; white-space:pre-wrap;}
+  /* help box */
+  .help{background:#231f10; border:1px solid #5c4a12; border-radius:13px; padding:12px 14px;
+    margin:0 0 16px;}
+  .help .trans{font-size:14.5px; color:#fde68a; line-height:1.6; white-space:pre-wrap;}
+  .help .vocab{margin-top:9px; display:flex; flex-wrap:wrap; gap:6px;}
+  .help .vchip{background:#0b1426; border:1px solid #5c4a12; color:#fcd34d; font-size:12.5px;
+    padding:4px 9px; border-radius:8px;}
   .opts{display:flex; flex-direction:column; gap:10px;}
   .opt{display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:13px;
     background:var(--card2); border:2px solid transparent; cursor:pointer; font-size:16px;
-    transition:.12s;}
+    line-height:1.45; transition:.12s;}
   .opt:hover{border-color:#3b4d6b;}
   .opt.sel{border-color:var(--accent); background:#15324a;}
   .opt .num{width:26px; height:26px; flex:none; border-radius:8px; background:#0b1426;
@@ -56,9 +62,6 @@
     background:#0b1426; color:var(--txt); font-size:17px;}
   input.ans:focus{outline:none; border-color:var(--accent);}
   .navhint{text-align:center; font-size:12.5px; color:var(--sub); margin-top:14px;}
-  .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
-    border-radius:6px; padding:1px 7px; color:var(--accent);}
-  /* result */
   .score-big{text-align:center; font-size:44px; font-weight:900; color:var(--accent); margin:6px 0;}
   .score-sub{text-align:center; color:var(--sub); margin-bottom:18px;}
   .rev{border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px;
@@ -67,9 +70,13 @@
   .rev.wrong{border-left:5px solid var(--bad);}
   .rev .rno{font-size:13px; font-weight:800; margin-bottom:6px;}
   .rev.correct .rno{color:var(--good);} .rev.wrong .rno{color:var(--bad);}
-  .rev .q{font-size:15px; margin-bottom:8px; white-space:pre-wrap;}
+  .rev .q{font-size:15px; margin-bottom:6px; white-space:pre-wrap;}
+  .rev .rtrans{font-size:13.5px;color:#fde68a;margin-bottom:8px;line-height:1.55;white-space:pre-wrap;}
   .rev .line{font-size:14px; margin:3px 0;}
   .rev .yours{color:#fda4af;} .rev .right{color:#86efac;}
+  .rev .rvocab{margin:8px 0; display:flex; flex-wrap:wrap; gap:6px;}
+  .rev .rvocab span{background:#231f10;border:1px solid #5c4a12;color:#fcd34d;font-size:12px;
+    padding:3px 8px;border-radius:7px;}
   .rev .exp{margin-top:8px; font-size:13.5px; color:#cbd5e1; line-height:1.6;
     background:#111c33; border-radius:9px; padding:9px 11px;}
   .outro{text-align:center; font-size:20px; font-weight:800; margin:22px 0 6px; color:var(--accent2);}
@@ -90,15 +97,16 @@
     <div class="sub">숭의중 2학년 · 지나티처 내신대비 변형문제</div>
   </header>
 
-  <!-- START -->
   <section id="start" class="card">
     <div class="field">
       <label>이름을 입력하세요</label>
       <input class="name" id="nameInput" placeholder="예: 천율민" autocomplete="off">
     </div>
-    <p class="sub" style="font-size:13.5px; line-height:1.6;">
-      총 <b id="qcount">0</b>문제예요. 한 문제씩 풀고 <b>모두 제출하면</b> 정답과 해설을 볼 수 있어요.
-      반복해서 풀면 자연스럽게 외워진답니다 💪
+    <p class="sub" style="font-size:13.5px; line-height:1.7;">
+      총 <b id="qcount">0</b>문제예요. 😊<br>
+      문제마다 <b style="color:#fcd34d;">한글 해석</b>과 <b style="color:#fcd34d;">단어 뜻</b>이 같이 나오니까
+      천천히 읽어보면 돼요. 모르는 건 당연해요!<br>
+      모두 풀고 제출하면 정답과 친절한 해설을 볼 수 있어요. 화이팅 💪
     </p>
     <button class="btn" id="startBtn">시작하기 ▶</button>
     <p class="hint">
@@ -106,7 +114,6 @@
     </p>
   </section>
 
-  <!-- QUIZ -->
   <section id="quiz" class="card hidden">
     <div class="pbar"><div class="pfill" id="pfill"></div></div>
     <div class="qmeta">
@@ -114,12 +121,12 @@
       <span class="qtype" id="qtype"></span>
     </div>
     <div class="qtext" id="qtext"></div>
+    <div id="help"></div>
     <div id="answerArea"></div>
     <button class="btn" id="nextBtn" style="margin-top:18px;">다음 ▶</button>
     <p class="navhint"><kbd>Enter</kbd> 로 다음 문제 · 객관식은 숫자키로 선택</p>
   </section>
 
-  <!-- RESULT -->
   <section id="result" class="card hidden">
     <div class="score-big" id="scoreBig"></div>
     <div class="score-sub" id="scoreSub"></div>
@@ -133,35 +140,24 @@
 <div class="toast" id="toast">복사됐어요! 카톡에 붙여넣기 하세요 ✅</div>
 
 <script>
-const QUIZ = [{"type": "mc", "q": "수동태(passive voice)의 기본 형태로 알맞은 것은?", "options": ["be동사 + 과거분사(p.p.)", "be동사 + 현재분사(-ing)", "have + 과거분사", "do + 동사원형"], "answer": 0, "exp": "수동태 = be동사 + 과거분사(p.p.) (+ by 행위자). '~되다, ~당하다'"}, {"type": "mc", "q": "능동태 'Dad fixed the broken chair.'의 수동태로 알맞은 것은?", "options": ["The broken chair fixed by Dad.", "The broken chair was fixed by Dad.", "The broken chair is fix by Dad.", "The broken chair was fix by Dad."], "answer": 1, "exp": "과거시제 → was + fixed(p.p.). The broken chair was fixed by Dad."}, {"type": "mc", "q": "능동태 'Jenny ate all the cookies.'의 수동태로 알맞은 것은?", "options": ["All the cookies was eaten by Jenny.", "All the cookies were ate by Jenny.", "All the cookies were eaten by Jenny.", "All the cookies are eaten by Jenny."], "answer": 2, "exp": "주어 cookies(복수)+과거 → were + eaten(eat-ate-eaten). were eaten by Jenny."}, {"type": "mc", "q": "빈칸에 알맞은 것은? English ______ around the world. (많은 사람이 영어를 말한다)", "options": ["is spoken", "speaks", "is speaking", "spoke"], "answer": 0, "exp": "English is spoken around the world. (speak-spoke-spoken, 현재 수동태 is spoken)"}, {"type": "mc", "q": "'have to'의 의미로 알맞은 것은?", "options": ["~할 수 있다", "~해야 한다", "~하고 싶다", "~하곤 했다"], "answer": 1, "exp": "have to = ~해야 한다 (의무). 과거는 had to, 부정은 don't have to(~할 필요 없다)."}, {"type": "mc", "q": "주어가 3인칭 단수(He/She)일 때 현재형으로 알맞은 것은?", "options": ["have to", "has to", "had to", "having to"], "answer": 1, "exp": "He/She/It + has to. 예: He has to do his homework."}, {"type": "mc", "q": "어법상 옳은 문장은?", "options": ["He has to doing his homework.", "He has to does his homework.", "He has to do his homework.", "He has to did his homework."], "answer": 2, "exp": "have/has to 뒤에는 동사원형! → has to do."}, {"type": "mc", "q": "빈칸에 알맞은 것은? I didn't ______ to buy a new book.", "options": ["had", "has", "have", "having"], "answer": 2, "exp": "didn't 뒤에는 동사원형 → didn't have to (~할 필요가 없었다)."}, {"type": "mc", "q": "빈칸에 알맞은 것은? ______ your brother have to practice the piano every day?", "options": ["Do", "Does", "Is", "Has"], "answer": 1, "exp": "주어 your brother(3인칭 단수) 의문문 → Does ~ have to. Does your brother have to ~?"}, {"type": "mc", "q": "어법상 옳은 문장은? (have to 부정)", "options": ["She doesn't have to goes to the dentist.", "She doesn't has to go to the dentist.", "She doesn't have to go to the dentist.", "She don't have to go to the dentist."], "answer": 2, "exp": "doesn't + have to + 동사원형(go). She doesn't have to go ~."}, {"type": "short", "q": "능동태 문장을 수동태로 바꾸세요.\nThey washed the car this morning.", "accept": ["the car was washed this morning", "the car was washed by them this morning", "the car was washed this morning by them"], "exp": "The car was washed this morning. (과거 수동태 was + washed)"}, {"type": "short", "q": "능동태 문장을 수동태로 바꾸세요.\nI clean my room every Saturday.", "accept": ["my room is cleaned every saturday", "my room is cleaned by me every saturday"], "exp": "My room is cleaned every Saturday. (현재 수동태 is + cleaned)"}, {"type": "short", "q": "괄호 안의 단어를 바르게 배열하세요. (마침표 제외)\n(was, by, the letter, written) ______ my best friend.", "accept": ["the letter was written by", "the letter was written"], "exp": "The letter was written by my best friend. (편지는 ~에 의해 쓰여졌다)"}, {"type": "short", "q": "괄호 안의 단어를 바르게 배열하세요.\n(to, they, wait, had) ______ a long time at the station.", "accept": ["they had to wait"], "exp": "They had to wait a long time at the station. (그들은 오래 기다려야 했다)"}];
+const QUIZ = [{"type": "mc", "q": "수동태(~되다, ~당하다)의 기본 형태로 알맞은 것은?", "options": ["be동사 + 과거분사(p.p.)", "be동사 + 현재분사(-ing)", "have + 과거분사", "do + 동사원형"], "answer": 0, "t": "'~되다'라는 뜻의 수동태가 어떤 모양인지 고르는 문제예요.", "v": ["수동태 = ~되다, ~당하다", "be동사 = is/am/are/was/were", "과거분사(p.p.) = 동사의 세 번째 모양"], "exp": "수동태 = be동사 + 과거분사(p.p.) (+ by 행위자)."}, {"type": "mc", "q": "능동태 'Dad fixed the broken chair.'의 수동태로 알맞은 것은?", "options": ["The broken chair fixed by Dad.", "The broken chair was fixed by Dad.", "The broken chair is fix by Dad.", "The broken chair was fix by Dad."], "answer": 1, "t": "능동: 아빠가 부서진 의자를 고쳤다 → 수동: 부서진 의자는 아빠에 의해 고쳐졌다", "v": ["fixed = 고쳤다", "broken = 부서진", "chair = 의자", "was fixed = 고쳐졌다"], "exp": "과거 → was + fixed(p.p.). The broken chair was fixed by Dad."}, {"type": "mc", "q": "능동태 'Jenny ate all the cookies.'의 수동태로 알맞은 것은?", "options": ["All the cookies was eaten by Jenny.", "All the cookies were ate by Jenny.", "All the cookies were eaten by Jenny.", "All the cookies are eaten by Jenny."], "answer": 2, "t": "능동: Jenny가 모든 쿠키를 먹었다 → 수동: 모든 쿠키는 Jenny에 의해 먹혔다", "v": ["ate = 먹었다 (eat-ate-eaten)", "all = 모든", "cookies = 쿠키(복수)", "were eaten = 먹혔다"], "exp": "cookies(복수)+과거 → were + eaten. were eaten by Jenny."}, {"type": "mc", "q": "빈칸에 알맞은 것은? English ______ around the world. (많은 사람이 영어를 말한다)", "options": ["is spoken (말해진다)", "speaks (말한다)", "is speaking (말하는 중)", "spoke (말했다)"], "answer": 0, "t": "영어는 전 세계에서 말해져요(쓰여요).", "v": ["English = 영어", "spoken = 말해지는 (speak-spoke-spoken)", "around the world = 전 세계에서"], "exp": "English is spoken around the world. (현재 수동태 is + spoken)"}, {"type": "mc", "q": "'have to'의 의미로 알맞은 것은?", "options": ["~할 수 있다", "~해야 한다", "~하고 싶다", "~하곤 했다"], "answer": 1, "t": "have to의 뜻을 고르는 문제예요.", "v": ["have to = ~해야 한다", "must = ~해야 한다"], "exp": "have to = ~해야 한다 (의무). 부정 don't have to = ~할 필요 없다."}, {"type": "mc", "q": "주어가 3인칭 단수(He/She)일 때 현재형으로 알맞은 것은?", "options": ["have to", "has to", "had to", "having to"], "answer": 1, "t": "He/She처럼 한 명일 때 쓰는 모양을 고르는 문제예요.", "v": ["has to = ~해야 한다 (3인칭 단수)", "3인칭 단수 = He/She/It"], "exp": "He/She/It + has to. 예: He has to do his homework."}, {"type": "mc", "q": "어법상 옳은 문장은? (have to 뒤 동사 모양)", "options": ["He has to doing his homework.", "He has to does his homework.", "He has to do his homework.", "He has to did his homework."], "answer": 2, "t": "그는 숙제를 해야 해요. (He has to do his homework.)", "v": ["homework = 숙제", "do = 하다 (동사원형)"], "exp": "have/has to 뒤에는 동사원형! → has to do."}, {"type": "mc", "q": "빈칸에 알맞은 것은? I didn't ______ to buy a new book.", "options": ["had", "has", "have", "having"], "answer": 2, "t": "나는 새 책을 살 필요가 없었어요.", "v": ["didn't = ~하지 않았다", "have to = ~해야 한다", "buy = 사다", "book = 책"], "exp": "didn't 뒤에는 동사원형 → didn't have to (~할 필요가 없었다)."}, {"type": "mc", "q": "빈칸에 알맞은 것은? ______ your brother have to practice the piano every day?", "options": ["Do", "Does", "Is", "Has"], "answer": 1, "t": "네 남동생은 매일 피아노 연습을 해야 하니?", "v": ["brother = 형제, 남동생", "practice = 연습하다", "every day = 매일"], "exp": "주어 your brother(한 명) 의문문 → Does ~ have to."}, {"type": "mc", "q": "어법상 옳은 문장은? (doesn't have to)", "options": ["She doesn't have to goes to the dentist.", "She doesn't has to go to the dentist.", "She doesn't have to go to the dentist.", "She don't have to go to the dentist."], "answer": 2, "t": "그녀는 치과에 갈 필요가 없어요.", "v": ["doesn't have to = ~할 필요 없다", "go = 가다", "dentist = 치과"], "exp": "doesn't + have to + 동사원형(go). She doesn't have to go ~."}, {"type": "short", "q": "능동태 문장을 수동태로 바꾸세요.\nThey washed the car this morning.", "accept": ["the car was washed this morning", "the car was washed by them this morning", "the car was washed this morning by them"], "t": "능동: 그들은 오늘 아침 세차를 했다 → 수동으로 바꿔요.", "v": ["washed = 씻었다, 세차했다", "car = 자동차", "this morning = 오늘 아침", "was washed = 씻겨졌다"], "exp": "The car was washed this morning. (과거 수동태 was + washed)"}, {"type": "short", "q": "능동태 문장을 수동태로 바꾸세요.\nI clean my room every Saturday.", "accept": ["my room is cleaned every saturday", "my room is cleaned by me every saturday"], "t": "능동: 나는 매주 토요일에 내 방을 청소한다 → 수동으로 바꿔요.", "v": ["clean = 청소하다", "room = 방", "every Saturday = 매주 토요일", "is cleaned = 청소된다"], "exp": "My room is cleaned every Saturday. (현재 수동태 is + cleaned)"}, {"type": "short", "q": "단어를 바르게 배열하세요. (마침표 빼고)\n(was, by, the letter, written) ______ my best friend.", "accept": ["the letter was written by", "the letter was written"], "t": "완성 뜻: 편지는 나의 가장 친한 친구에 의해 쓰여졌어요.", "v": ["letter = 편지", "written = 쓰여진 (write-wrote-written)", "by = ~에 의해"], "exp": "The letter was written by my best friend."}, {"type": "short", "q": "단어를 바르게 배열하세요.\n(to, they, wait, had) ______ a long time at the station.", "accept": ["they had to wait"], "t": "완성 뜻: 그들은 역에서 오랫동안 기다려야 했어요.", "v": ["wait = 기다리다", "had to = ~해야 했다", "a long time = 오랫동안", "station = 역"], "exp": "They had to wait a long time at the station."}];
 const TITLE = "Lesson 3 Grammar 변형문제 (수동태 · have to)";
-
 const $=id=>document.getElementById(id);
 let idx=0, answers=[], studentName="";
 
-function norm(s){
-  return (s||"").toLowerCase().trim()
-    .replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");
-}
-function isShortCorrect(q,val){
-  const n=norm(val);
-  if(!n) return false;
-  return (q.accept||[]).some(a=>norm(a)===n);
-}
+function norm(s){return (s||"").toLowerCase().trim().replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");}
+function isShortCorrect(q,val){const n=norm(val); if(!n) return false; return (q.accept||[]).some(a=>norm(a)===n);}
+function vocabHtml(v){ if(!v||!v.length) return ""; return `<div class="vocab">`+v.map(w=>`<span class="vchip">${w}</span>`).join("")+`</div>`; }
 
 $("qcount").textContent=QUIZ.length;
-
 $("startBtn").onclick=start;
 $("nameInput").addEventListener("keydown",e=>{ if(e.key==="Enter") start(); });
 
 function start(){
-  const nm=$("nameInput").value.trim();
-  studentName = nm || "학생";
+  studentName = $("nameInput").value.trim() || "학생";
   idx=0; answers=new Array(QUIZ.length).fill(null);
-  $("start").classList.add("hidden");
-  $("result").classList.add("hidden");
-  $("quiz").classList.remove("hidden");
-  render();
+  $("start").classList.add("hidden"); $("result").classList.add("hidden");
+  $("quiz").classList.remove("hidden"); render();
 }
 
 function render(){
@@ -170,6 +166,7 @@ function render(){
   $("qno").textContent=`${idx+1} / ${QUIZ.length}`;
   $("qtype").textContent = q.type==="mc" ? "객관식" : "주관식";
   $("qtext").textContent=q.q;
+  $("help").innerHTML = `<div class="help"><div class="trans">📖 ${q.t}</div>${vocabHtml(q.v)}</div>`;
   const area=$("answerArea"); area.innerHTML="";
   if(q.type==="mc"){
     const box=document.createElement("div"); box.className="opts";
@@ -177,95 +174,68 @@ function render(){
       const d=document.createElement("div"); d.className="opt"; d.dataset.i=i;
       if(answers[idx]===i) d.classList.add("sel");
       d.innerHTML=`<span class="num">${i+1}</span><span>${op}</span>`;
-      d.onclick=()=>selectMc(i);
-      box.appendChild(d);
+      d.onclick=()=>selectMc(i); box.appendChild(d);
     });
     area.appendChild(box);
   }else{
     const inp=document.createElement("input");
-    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 쓰세요";
+    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 써 보세요 (천천히!)";
     inp.autocomplete="off"; inp.value = answers[idx]||"";
-    area.appendChild(inp);
-    setTimeout(()=>inp.focus(),30);
+    area.appendChild(inp); setTimeout(()=>inp.focus(),30);
   }
   $("nextBtn").textContent = (idx===QUIZ.length-1) ? "결과 보기 ▶" : "다음 ▶";
 }
 
 function selectMc(i){
   answers[idx]=i;
-  document.querySelectorAll(".opt").forEach(o=>{
-    o.classList.toggle("sel", parseInt(o.dataset.i)===i);
-  });
+  document.querySelectorAll(".opt").forEach(o=>o.classList.toggle("sel", parseInt(o.dataset.i)===i));
 }
-
-function saveShort(){
-  const inp=$("shortInput");
-  if(inp) answers[idx]=inp.value;
-}
-
+function saveShort(){ const inp=$("shortInput"); if(inp) answers[idx]=inp.value; }
 function next(){
-  const q=QUIZ[idx];
-  if(q.type==="short") saveShort();
-  if(idx<QUIZ.length-1){ idx++; render(); }
-  else finish();
+  const q=QUIZ[idx]; if(q.type==="short") saveShort();
+  if(idx<QUIZ.length-1){ idx++; render(); } else finish();
 }
 $("nextBtn").onclick=next;
 
 document.addEventListener("keydown",e=>{
   if(!$("quiz").classList.contains("hidden")){
     const q=QUIZ[idx];
-    if(q.type==="mc" && /^[1-9]$/.test(e.key)){
-      const n=parseInt(e.key);
-      if(n<=q.options.length){ selectMc(n-1); }
-    }
+    if(q.type==="mc" && /^[1-9]$/.test(e.key)){ const n=parseInt(e.key); if(n<=q.options.length) selectMc(n-1); }
     if(e.key==="Enter"){ e.preventDefault(); next(); }
   }
 });
 
 function finish(){
-  let correct=0;
-  const rev=$("review"); rev.innerHTML="";
+  let correct=0; const rev=$("review"); rev.innerHTML="";
   QUIZ.forEach((q,i)=>{
     let ok=false, yours="";
-    if(q.type==="mc"){
-      const a=answers[i];
-      yours = (a==null)?"(무응답)":`${a+1}. ${q.options[a]}`;
-      ok = (a===q.answer);
-    }else{
-      yours = answers[i]? answers[i] : "(무응답)";
-      ok = isShortCorrect(q, answers[i]);
-    }
+    if(q.type==="mc"){ const a=answers[i]; yours=(a==null)?"(무응답)":`${a+1}. ${q.options[a]}`; ok=(a===q.answer); }
+    else{ yours=answers[i]?answers[i]:"(무응답)"; ok=isShortCorrect(q,answers[i]); }
     if(ok) correct++;
     const div=document.createElement("div");
     div.className="rev "+(ok?"correct":"wrong");
     let rightTxt = q.type==="mc" ? `${q.answer+1}. ${q.options[q.answer]}` : q.accept[0];
+    let vchips = (q.v&&q.v.length)?`<div class="rvocab">`+q.v.map(w=>`<span>${w}</span>`).join("")+`</div>`:"";
     div.innerHTML = `<div class="rno">${i+1}번 ${ok?"⭕ 정답":"❌ 오답"}</div>
-      <div class="q">${q.q}</div>`+
+      <div class="q">${q.q}</div>
+      <div class="rtrans">📖 ${q.t}</div>`+
       (ok? `<div class="line right">✔ 내 답: ${yours}</div>`
-         : `<div class="line yours">✖ 내 답: ${yours}</div>
-            <div class="line right">정답: ${rightTxt}</div>`)+
-      `<div class="exp">💡 ${q.exp}</div>`;
+         : `<div class="line yours">✖ 내 답: ${yours}</div><div class="line right">정답: ${rightTxt}</div>`)+
+      vchips + `<div class="exp">💡 ${q.exp}</div>`;
     rev.appendChild(div);
   });
-  const total=QUIZ.length;
-  const score=Math.round(correct/total*100);
+  const total=QUIZ.length, score=Math.round(correct/total*100);
   $("scoreBig").textContent=`${correct} / ${total}`;
   $("scoreSub").textContent=`${score}점 · ${studentName} 학생`;
-  $("quiz").classList.add("hidden");
-  $("result").classList.remove("hidden");
-  window.scrollTo(0,0);
-  buildCopy(correct,total,score);
+  $("quiz").classList.add("hidden"); $("result").classList.remove("hidden");
+  window.scrollTo(0,0); buildCopy(correct,total,score);
 }
 
 let copyText="";
 function buildCopy(correct,total,score){
   const wrongs=[];
-  QUIZ.forEach((q,i)=>{
-    let ok = q.type==="mc" ? (answers[i]===q.answer) : isShortCorrect(q,answers[i]);
-    if(!ok) wrongs.push(i+1);
-  });
-  copyText =
-`[지나티처 결과 보고 📨]
+  QUIZ.forEach((q,i)=>{ let ok=q.type==="mc"?(answers[i]===q.answer):isShortCorrect(q,answers[i]); if(!ok) wrongs.push(i+1); });
+  copyText=`[지나티처 결과 보고 📨]
 프린트: ${TITLE}
 이름: ${studentName}
 점수: ${correct}/${total} (${score}점)
@@ -274,22 +244,12 @@ function buildCopy(correct,total,score){
 수고했습니당 ~~~ ㅎㅎㅎ`;
   $("copyPreview").textContent=copyText;
 }
-
 $("copyBtn").onclick=async()=>{
   try{ await navigator.clipboard.writeText(copyText); }
-  catch(e){
-    const t=document.createElement("textarea"); t.value=copyText;
-    document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
-  }
-  const toast=$("toast"); toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),1800);
+  catch(e){ const t=document.createElement("textarea"); t.value=copyText; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  const toast=$("toast"); toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),1800);
 };
-
-$("retryBtn").onclick=()=>{
-  $("result").classList.add("hidden");
-  $("start").classList.remove("hidden");
-  window.scrollTo(0,0);
-};
+$("retryBtn").onclick=()=>{ $("result").classList.add("hidden"); $("start").classList.remove("hidden"); window.scrollTo(0,0); };
 </script>
 </body>
 </html>

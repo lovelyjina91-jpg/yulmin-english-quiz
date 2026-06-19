@@ -8,6 +8,7 @@
   :root{
     --bg:#0f172a; --card:#1e293b; --card2:#243149; --accent:#38bdf8; --accent2:#22d3ee;
     --good:#22c55e; --bad:#f43f5e; --txt:#e2e8f0; --sub:#94a3b8; --line:#334155;
+    --help:#facc15;
   }
   *{box-sizing:border-box;}
   body{margin:0; background:linear-gradient(160deg,#0f172a,#111c33); color:var(--txt);
@@ -20,7 +21,6 @@
   .sub{color:var(--sub); font-size:14px;}
   .card{background:var(--card); border:1px solid var(--line); border-radius:18px;
     padding:22px; box-shadow:0 14px 40px rgba(0,0,0,.35);}
-  /* start */
   .field{margin:14px 0;}
   .field label{display:block; font-size:14px; color:var(--sub); margin-bottom:6px;}
   input.name{width:100%; padding:13px 14px; border-radius:12px; border:1px solid var(--line);
@@ -32,20 +32,26 @@
   .btn:active{transform:scale(.98);}
   .btn.ghost{background:#334155; color:var(--txt);}
   .hint{font-size:12.5px; color:var(--sub); text-align:center; margin-top:12px; line-height:1.7;}
-  .hint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
+  .hint kbd, .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
     border-radius:6px; padding:1px 7px; font-size:11.5px; color:var(--accent);}
-  /* progress */
   .pbar{height:8px; background:#0b1426; border-radius:99px; overflow:hidden; margin-bottom:16px;}
   .pfill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0;
     transition:width .3s;}
   .qmeta{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
   .qno{font-weight:800; color:var(--accent); font-size:14px;}
   .qtype{font-size:12px; color:var(--sub); background:#0b1426; padding:3px 10px; border-radius:99px;}
-  .qtext{font-size:18px; line-height:1.55; margin:6px 0 18px; font-weight:600; white-space:pre-wrap;}
+  .qtext{font-size:18px; line-height:1.55; margin:6px 0 12px; font-weight:600; white-space:pre-wrap;}
+  /* help box */
+  .help{background:#231f10; border:1px solid #5c4a12; border-radius:13px; padding:12px 14px;
+    margin:0 0 16px;}
+  .help .trans{font-size:14.5px; color:#fde68a; line-height:1.6; white-space:pre-wrap;}
+  .help .vocab{margin-top:9px; display:flex; flex-wrap:wrap; gap:6px;}
+  .help .vchip{background:#0b1426; border:1px solid #5c4a12; color:#fcd34d; font-size:12.5px;
+    padding:4px 9px; border-radius:8px;}
   .opts{display:flex; flex-direction:column; gap:10px;}
   .opt{display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:13px;
     background:var(--card2); border:2px solid transparent; cursor:pointer; font-size:16px;
-    transition:.12s;}
+    line-height:1.45; transition:.12s;}
   .opt:hover{border-color:#3b4d6b;}
   .opt.sel{border-color:var(--accent); background:#15324a;}
   .opt .num{width:26px; height:26px; flex:none; border-radius:8px; background:#0b1426;
@@ -56,9 +62,6 @@
     background:#0b1426; color:var(--txt); font-size:17px;}
   input.ans:focus{outline:none; border-color:var(--accent);}
   .navhint{text-align:center; font-size:12.5px; color:var(--sub); margin-top:14px;}
-  .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
-    border-radius:6px; padding:1px 7px; color:var(--accent);}
-  /* result */
   .score-big{text-align:center; font-size:44px; font-weight:900; color:var(--accent); margin:6px 0;}
   .score-sub{text-align:center; color:var(--sub); margin-bottom:18px;}
   .rev{border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px;
@@ -67,9 +70,13 @@
   .rev.wrong{border-left:5px solid var(--bad);}
   .rev .rno{font-size:13px; font-weight:800; margin-bottom:6px;}
   .rev.correct .rno{color:var(--good);} .rev.wrong .rno{color:var(--bad);}
-  .rev .q{font-size:15px; margin-bottom:8px; white-space:pre-wrap;}
+  .rev .q{font-size:15px; margin-bottom:6px; white-space:pre-wrap;}
+  .rev .rtrans{font-size:13.5px;color:#fde68a;margin-bottom:8px;line-height:1.55;white-space:pre-wrap;}
   .rev .line{font-size:14px; margin:3px 0;}
   .rev .yours{color:#fda4af;} .rev .right{color:#86efac;}
+  .rev .rvocab{margin:8px 0; display:flex; flex-wrap:wrap; gap:6px;}
+  .rev .rvocab span{background:#231f10;border:1px solid #5c4a12;color:#fcd34d;font-size:12px;
+    padding:3px 8px;border-radius:7px;}
   .rev .exp{margin-top:8px; font-size:13.5px; color:#cbd5e1; line-height:1.6;
     background:#111c33; border-radius:9px; padding:9px 11px;}
   .outro{text-align:center; font-size:20px; font-weight:800; margin:22px 0 6px; color:var(--accent2);}
@@ -90,15 +97,16 @@
     <div class="sub">숭의중 2학년 · 지나티처 내신대비 변형문제</div>
   </header>
 
-  <!-- START -->
   <section id="start" class="card">
     <div class="field">
       <label>이름을 입력하세요</label>
       <input class="name" id="nameInput" placeholder="예: 천율민" autocomplete="off">
     </div>
-    <p class="sub" style="font-size:13.5px; line-height:1.6;">
-      총 <b id="qcount">0</b>문제예요. 한 문제씩 풀고 <b>모두 제출하면</b> 정답과 해설을 볼 수 있어요.
-      반복해서 풀면 자연스럽게 외워진답니다 💪
+    <p class="sub" style="font-size:13.5px; line-height:1.7;">
+      총 <b id="qcount">0</b>문제예요. 😊<br>
+      문제마다 <b style="color:#fcd34d;">한글 해석</b>과 <b style="color:#fcd34d;">단어 뜻</b>이 같이 나오니까
+      천천히 읽어보면 돼요. 모르는 건 당연해요!<br>
+      모두 풀고 제출하면 정답과 친절한 해설을 볼 수 있어요. 화이팅 💪
     </p>
     <button class="btn" id="startBtn">시작하기 ▶</button>
     <p class="hint">
@@ -106,7 +114,6 @@
     </p>
   </section>
 
-  <!-- QUIZ -->
   <section id="quiz" class="card hidden">
     <div class="pbar"><div class="pfill" id="pfill"></div></div>
     <div class="qmeta">
@@ -114,12 +121,12 @@
       <span class="qtype" id="qtype"></span>
     </div>
     <div class="qtext" id="qtext"></div>
+    <div id="help"></div>
     <div id="answerArea"></div>
     <button class="btn" id="nextBtn" style="margin-top:18px;">다음 ▶</button>
     <p class="navhint"><kbd>Enter</kbd> 로 다음 문제 · 객관식은 숫자키로 선택</p>
   </section>
 
-  <!-- RESULT -->
   <section id="result" class="card hidden">
     <div class="score-big" id="scoreBig"></div>
     <div class="score-sub" id="scoreSub"></div>
@@ -133,35 +140,24 @@
 <div class="toast" id="toast">복사됐어요! 카톡에 붙여넣기 하세요 ✅</div>
 
 <script>
-const QUIZ = [{"type": "mc", "q": "영영풀이에 알맞은 단어는? \"the amount of money available for a purpose\"", "options": ["price", "budget", "discount", "coin"], "answer": 1, "exp": "어떤 목적에 쓸 수 있는 돈의 양 = budget (예산)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a cut in from the usual cost of something\"", "options": ["discount", "donate", "price", "spread"], "answer": 0, "exp": "원래 가격에서 깎아주는 것 = discount (할인)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to give money or goods for a good cause\"", "options": ["rely on", "influence", "donate", "spread"], "answer": 2, "exp": "좋은 목적을 위해 돈·물건을 주다 = donate (기부하다)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a small, flat, and round piece of metal used as money\"", "options": ["budget", "price", "coin", "receipt"], "answer": 2, "exp": "돈으로 쓰는 작고 납작하고 둥근 금속 = coin (동전)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"the amount of money required in payment for something\"", "options": ["price", "budget", "discount", "coin"], "answer": 0, "exp": "무언가를 사기 위해 내야 하는 돈 = price (가격)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to become known by many people\"", "options": ["donate", "spread", "rely on", "influence"], "answer": 1, "exp": "많은 사람에게 알려지다·퍼지다 = spread"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to affect someone in an indirect but usually important way\"", "options": ["influence", "spread", "donate", "rely on"], "answer": 0, "exp": "간접적이지만 중요하게 영향을 주다 = influence (영향을 주다)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to trust or believe someone or something\"", "options": ["spread", "influence", "rely on", "donate"], "answer": 2, "exp": "누군가/무언가를 믿고 의지하다 = rely on"}, {"type": "mc", "q": "빈칸에 알맞은 말은? She has a ______ for knowledge.", "options": ["receipt", "hunger", "souvenir", "viral"], "answer": 1, "exp": "hunger for knowledge = 지식에 대한 갈망. hunger는 '굶주림, 갈망'."}, {"type": "mc", "q": "빈칸에 알맞은 말은? A gift will be a nice ______ from Korea.", "options": ["receipt", "viral", "souvenir", "hunger"], "answer": 2, "exp": "souvenir = 기념품. 한국에서 온 좋은 기념품."}, {"type": "mc", "q": "빈칸에 알맞은 말은? You should keep the ______ as proof of purchase.", "options": ["receipt", "souvenir", "hunger", "viral"], "answer": 0, "exp": "receipt = 영수증. 구매 증거로 영수증을 보관해야 한다."}, {"type": "mc", "q": "빈칸에 알맞은 말은? They posted the video, and it quickly went ______.", "options": ["hunger", "souvenir", "receipt", "viral"], "answer": 3, "exp": "go viral = 입소문이 나다, 빠르게 퍼지다. viral = 바이러스성의, 입소문이 난."}, {"type": "short", "q": "빈칸을 채우세요. (속임수에 속다)\n그는 그런 속임수에 속지 않을 것이다. → He won't ______ ______ such a trick.", "accept": ["fall for"], "exp": "fall for = (속임수에) 속아 넘어가다. He won't fall for such a trick."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (한정된)\n그 제안은 한정된 기간에만 적용된다. → That offer is for a ______ period only.", "accept": ["limited"], "exp": "limited = 한정된, 제한된. a limited period = 한정된 기간."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (전략)\n그 회사는 혁신적인 판매 전략을 채택했다. → The company adopted an innovative sales ______.", "accept": ["strategy"], "exp": "strategy = 전략. sales strategy = 판매 전략."}];
+const QUIZ = [{"type": "mc", "q": "영영풀이에 알맞은 단어는? \"the amount of money available for a purpose\"", "options": ["price (가격)", "budget (예산)", "discount (할인)", "coin (동전)"], "answer": 1, "t": "영영풀이 해석: '어떤 목적에 쓸 수 있는 돈의 양'", "v": ["amount of money = 돈의 양", "available = 쓸 수 있는", "purpose = 목적", "budget = 예산"], "exp": "쓸 수 있는 돈의 양 = budget (예산)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a cut in from the usual cost of something\"", "options": ["discount (할인)", "donate (기부하다)", "price (가격)", "spread (퍼지다)"], "answer": 0, "t": "영영풀이 해석: '원래 가격에서 깎아주는 것'", "v": ["cut = 깎음", "usual cost = 평소 가격", "discount = 할인"], "exp": "가격을 깎아주는 것 = discount (할인)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to give money or goods for a good cause\"", "options": ["rely on (의지하다)", "influence (영향을 주다)", "donate (기부하다)", "spread (퍼지다)"], "answer": 2, "t": "영영풀이 해석: '좋은 목적을 위해 돈이나 물건을 주는 것'", "v": ["give = 주다", "goods = 물건", "good cause = 좋은 목적", "donate = 기부하다"], "exp": "좋은 목적으로 돈·물건을 주다 = donate (기부하다)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a small, flat, and round piece of metal used as money\"", "options": ["budget (예산)", "price (가격)", "coin (동전)", "receipt (영수증)"], "answer": 2, "t": "영영풀이 해석: '돈으로 쓰는 작고 납작하고 둥근 금속 조각'", "v": ["small = 작은", "flat = 납작한", "round = 둥근", "metal = 금속", "coin = 동전"], "exp": "돈으로 쓰는 둥근 금속 = coin (동전)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"the amount of money required in payment for something\"", "options": ["price (가격)", "budget (예산)", "discount (할인)", "coin (동전)"], "answer": 0, "t": "영영풀이 해석: '무언가를 사기 위해 내야 하는 돈'", "v": ["required = 필요한", "payment = 지불", "price = 가격"], "exp": "무언가를 사기 위해 내는 돈 = price (가격)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to become known by many people\"", "options": ["donate (기부하다)", "spread (퍼지다)", "rely on (의지하다)", "influence (영향을 주다)"], "answer": 1, "t": "영영풀이 해석: '많은 사람에게 알려지다, 퍼지다'", "v": ["become known = 알려지다", "many people = 많은 사람", "spread = 퍼지다"], "exp": "많은 사람에게 알려지다 = spread (퍼지다)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to affect someone in an indirect but usually important way\"", "options": ["influence (영향을 주다)", "spread (퍼지다)", "donate (기부하다)", "rely on (의지하다)"], "answer": 0, "t": "영영풀이 해석: '간접적이지만 보통 중요하게 영향을 주다'", "v": ["affect = 영향을 주다", "indirect = 간접적인", "important = 중요한", "influence = 영향을 주다"], "exp": "중요하게 영향을 주다 = influence (영향을 주다)"}, {"type": "mc", "q": "영영풀이에 알맞은 표현은? \"to trust or believe someone or something\"", "options": ["spread (퍼지다)", "influence (영향)", "rely on (의지하다)", "donate (기부)"], "answer": 2, "t": "영영풀이 해석: '누군가나 무언가를 믿고 의지하다'", "v": ["trust = 믿다", "believe = 믿다", "rely on = 의지하다"], "exp": "믿고 의지하다 = rely on"}, {"type": "mc", "q": "빈칸에 알맞은 말은? She has a ______ for knowledge.", "options": ["receipt (영수증)", "hunger (갈망)", "souvenir (기념품)", "viral (입소문 난)"], "answer": 1, "t": "그녀는 지식에 대한 갈망이 있어요.", "v": ["hunger = 굶주림, 갈망", "knowledge = 지식", "for = ~에 대한"], "exp": "hunger for knowledge = 지식에 대한 갈망."}, {"type": "mc", "q": "빈칸에 알맞은 말은? A gift will be a nice ______ from Korea.", "options": ["receipt (영수증)", "viral (입소문 난)", "souvenir (기념품)", "hunger (갈망)"], "answer": 2, "t": "선물은 한국에서 온 멋진 기념품이 될 거예요.", "v": ["gift = 선물", "souvenir = 기념품", "from = ~에서 온"], "exp": "souvenir = 기념품."}, {"type": "mc", "q": "빈칸에 알맞은 말은? You should keep the ______ as proof of purchase.", "options": ["receipt (영수증)", "souvenir (기념품)", "hunger (갈망)", "viral (입소문 난)"], "answer": 0, "t": "구매 증거로 영수증을 보관해야 해요.", "v": ["keep = 보관하다", "receipt = 영수증", "proof = 증거", "purchase = 구매"], "exp": "receipt = 영수증 (구매 증거)."}, {"type": "mc", "q": "빈칸에 알맞은 말은? They posted the video, and it quickly went ______.", "options": ["hunger (갈망)", "souvenir (기념품)", "receipt (영수증)", "viral (입소문 난)"], "answer": 3, "t": "그들이 영상을 올렸고, 그것은 빠르게 입소문이 났어요.", "v": ["posted = 올렸다", "video = 영상", "go viral = 입소문이 나다, 퍼지다"], "exp": "go viral = 입소문이 나다, 빠르게 퍼지다."}, {"type": "short", "q": "빈칸을 채우세요. (속임수에 속다 = fall ___)\n그는 그런 속임수에 속지 않을 것이다. → He won't ______ ______ such a trick.", "accept": ["fall for"], "t": "우리말: 그는 그런 속임수에 속지 않을 것이다.", "v": ["won't = ~하지 않을 것이다", "fall for = (속임수에) 속다", "trick = 속임수"], "exp": "fall for = (속임수에) 속아 넘어가다. He won't fall for such a trick."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (한정된)\n그 제안은 한정된 기간에만 적용된다. → That offer is for a ______ period only.", "accept": ["limited"], "t": "우리말: 그 제안은 한정된 기간에만 적용된다.", "v": ["offer = 제안", "limited = 한정된", "period = 기간", "only = ~만"], "exp": "limited = 한정된, 제한된. a limited period = 한정된 기간."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (전략)\n그 회사는 혁신적인 판매 전략을 채택했다. → The company adopted an innovative sales ______.", "accept": ["strategy"], "t": "우리말: 그 회사는 혁신적인 판매 전략을 채택했다.", "v": ["adopted = 채택했다", "innovative = 혁신적인", "sales = 판매", "strategy = 전략"], "exp": "strategy = 전략. sales strategy = 판매 전략."}];
 const TITLE = "Lesson 4 Vocabulary 변형문제 (Advanced)";
-
 const $=id=>document.getElementById(id);
 let idx=0, answers=[], studentName="";
 
-function norm(s){
-  return (s||"").toLowerCase().trim()
-    .replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");
-}
-function isShortCorrect(q,val){
-  const n=norm(val);
-  if(!n) return false;
-  return (q.accept||[]).some(a=>norm(a)===n);
-}
+function norm(s){return (s||"").toLowerCase().trim().replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");}
+function isShortCorrect(q,val){const n=norm(val); if(!n) return false; return (q.accept||[]).some(a=>norm(a)===n);}
+function vocabHtml(v){ if(!v||!v.length) return ""; return `<div class="vocab">`+v.map(w=>`<span class="vchip">${w}</span>`).join("")+`</div>`; }
 
 $("qcount").textContent=QUIZ.length;
-
 $("startBtn").onclick=start;
 $("nameInput").addEventListener("keydown",e=>{ if(e.key==="Enter") start(); });
 
 function start(){
-  const nm=$("nameInput").value.trim();
-  studentName = nm || "학생";
+  studentName = $("nameInput").value.trim() || "학생";
   idx=0; answers=new Array(QUIZ.length).fill(null);
-  $("start").classList.add("hidden");
-  $("result").classList.add("hidden");
-  $("quiz").classList.remove("hidden");
-  render();
+  $("start").classList.add("hidden"); $("result").classList.add("hidden");
+  $("quiz").classList.remove("hidden"); render();
 }
 
 function render(){
@@ -170,6 +166,7 @@ function render(){
   $("qno").textContent=`${idx+1} / ${QUIZ.length}`;
   $("qtype").textContent = q.type==="mc" ? "객관식" : "주관식";
   $("qtext").textContent=q.q;
+  $("help").innerHTML = `<div class="help"><div class="trans">📖 ${q.t}</div>${vocabHtml(q.v)}</div>`;
   const area=$("answerArea"); area.innerHTML="";
   if(q.type==="mc"){
     const box=document.createElement("div"); box.className="opts";
@@ -177,95 +174,68 @@ function render(){
       const d=document.createElement("div"); d.className="opt"; d.dataset.i=i;
       if(answers[idx]===i) d.classList.add("sel");
       d.innerHTML=`<span class="num">${i+1}</span><span>${op}</span>`;
-      d.onclick=()=>selectMc(i);
-      box.appendChild(d);
+      d.onclick=()=>selectMc(i); box.appendChild(d);
     });
     area.appendChild(box);
   }else{
     const inp=document.createElement("input");
-    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 쓰세요";
+    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 써 보세요 (천천히!)";
     inp.autocomplete="off"; inp.value = answers[idx]||"";
-    area.appendChild(inp);
-    setTimeout(()=>inp.focus(),30);
+    area.appendChild(inp); setTimeout(()=>inp.focus(),30);
   }
   $("nextBtn").textContent = (idx===QUIZ.length-1) ? "결과 보기 ▶" : "다음 ▶";
 }
 
 function selectMc(i){
   answers[idx]=i;
-  document.querySelectorAll(".opt").forEach(o=>{
-    o.classList.toggle("sel", parseInt(o.dataset.i)===i);
-  });
+  document.querySelectorAll(".opt").forEach(o=>o.classList.toggle("sel", parseInt(o.dataset.i)===i));
 }
-
-function saveShort(){
-  const inp=$("shortInput");
-  if(inp) answers[idx]=inp.value;
-}
-
+function saveShort(){ const inp=$("shortInput"); if(inp) answers[idx]=inp.value; }
 function next(){
-  const q=QUIZ[idx];
-  if(q.type==="short") saveShort();
-  if(idx<QUIZ.length-1){ idx++; render(); }
-  else finish();
+  const q=QUIZ[idx]; if(q.type==="short") saveShort();
+  if(idx<QUIZ.length-1){ idx++; render(); } else finish();
 }
 $("nextBtn").onclick=next;
 
 document.addEventListener("keydown",e=>{
   if(!$("quiz").classList.contains("hidden")){
     const q=QUIZ[idx];
-    if(q.type==="mc" && /^[1-9]$/.test(e.key)){
-      const n=parseInt(e.key);
-      if(n<=q.options.length){ selectMc(n-1); }
-    }
+    if(q.type==="mc" && /^[1-9]$/.test(e.key)){ const n=parseInt(e.key); if(n<=q.options.length) selectMc(n-1); }
     if(e.key==="Enter"){ e.preventDefault(); next(); }
   }
 });
 
 function finish(){
-  let correct=0;
-  const rev=$("review"); rev.innerHTML="";
+  let correct=0; const rev=$("review"); rev.innerHTML="";
   QUIZ.forEach((q,i)=>{
     let ok=false, yours="";
-    if(q.type==="mc"){
-      const a=answers[i];
-      yours = (a==null)?"(무응답)":`${a+1}. ${q.options[a]}`;
-      ok = (a===q.answer);
-    }else{
-      yours = answers[i]? answers[i] : "(무응답)";
-      ok = isShortCorrect(q, answers[i]);
-    }
+    if(q.type==="mc"){ const a=answers[i]; yours=(a==null)?"(무응답)":`${a+1}. ${q.options[a]}`; ok=(a===q.answer); }
+    else{ yours=answers[i]?answers[i]:"(무응답)"; ok=isShortCorrect(q,answers[i]); }
     if(ok) correct++;
     const div=document.createElement("div");
     div.className="rev "+(ok?"correct":"wrong");
     let rightTxt = q.type==="mc" ? `${q.answer+1}. ${q.options[q.answer]}` : q.accept[0];
+    let vchips = (q.v&&q.v.length)?`<div class="rvocab">`+q.v.map(w=>`<span>${w}</span>`).join("")+`</div>`:"";
     div.innerHTML = `<div class="rno">${i+1}번 ${ok?"⭕ 정답":"❌ 오답"}</div>
-      <div class="q">${q.q}</div>`+
+      <div class="q">${q.q}</div>
+      <div class="rtrans">📖 ${q.t}</div>`+
       (ok? `<div class="line right">✔ 내 답: ${yours}</div>`
-         : `<div class="line yours">✖ 내 답: ${yours}</div>
-            <div class="line right">정답: ${rightTxt}</div>`)+
-      `<div class="exp">💡 ${q.exp}</div>`;
+         : `<div class="line yours">✖ 내 답: ${yours}</div><div class="line right">정답: ${rightTxt}</div>`)+
+      vchips + `<div class="exp">💡 ${q.exp}</div>`;
     rev.appendChild(div);
   });
-  const total=QUIZ.length;
-  const score=Math.round(correct/total*100);
+  const total=QUIZ.length, score=Math.round(correct/total*100);
   $("scoreBig").textContent=`${correct} / ${total}`;
   $("scoreSub").textContent=`${score}점 · ${studentName} 학생`;
-  $("quiz").classList.add("hidden");
-  $("result").classList.remove("hidden");
-  window.scrollTo(0,0);
-  buildCopy(correct,total,score);
+  $("quiz").classList.add("hidden"); $("result").classList.remove("hidden");
+  window.scrollTo(0,0); buildCopy(correct,total,score);
 }
 
 let copyText="";
 function buildCopy(correct,total,score){
   const wrongs=[];
-  QUIZ.forEach((q,i)=>{
-    let ok = q.type==="mc" ? (answers[i]===q.answer) : isShortCorrect(q,answers[i]);
-    if(!ok) wrongs.push(i+1);
-  });
-  copyText =
-`[지나티처 결과 보고 📨]
+  QUIZ.forEach((q,i)=>{ let ok=q.type==="mc"?(answers[i]===q.answer):isShortCorrect(q,answers[i]); if(!ok) wrongs.push(i+1); });
+  copyText=`[지나티처 결과 보고 📨]
 프린트: ${TITLE}
 이름: ${studentName}
 점수: ${correct}/${total} (${score}점)
@@ -274,22 +244,12 @@ function buildCopy(correct,total,score){
 수고했습니당 ~~~ ㅎㅎㅎ`;
   $("copyPreview").textContent=copyText;
 }
-
 $("copyBtn").onclick=async()=>{
   try{ await navigator.clipboard.writeText(copyText); }
-  catch(e){
-    const t=document.createElement("textarea"); t.value=copyText;
-    document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
-  }
-  const toast=$("toast"); toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),1800);
+  catch(e){ const t=document.createElement("textarea"); t.value=copyText; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  const toast=$("toast"); toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),1800);
 };
-
-$("retryBtn").onclick=()=>{
-  $("result").classList.add("hidden");
-  $("start").classList.remove("hidden");
-  window.scrollTo(0,0);
-};
+$("retryBtn").onclick=()=>{ $("result").classList.add("hidden"); $("start").classList.remove("hidden"); window.scrollTo(0,0); };
 </script>
 </body>
 </html>

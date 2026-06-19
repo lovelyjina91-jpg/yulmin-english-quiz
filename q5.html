@@ -8,6 +8,7 @@
   :root{
     --bg:#0f172a; --card:#1e293b; --card2:#243149; --accent:#38bdf8; --accent2:#22d3ee;
     --good:#22c55e; --bad:#f43f5e; --txt:#e2e8f0; --sub:#94a3b8; --line:#334155;
+    --help:#facc15;
   }
   *{box-sizing:border-box;}
   body{margin:0; background:linear-gradient(160deg,#0f172a,#111c33); color:var(--txt);
@@ -20,7 +21,6 @@
   .sub{color:var(--sub); font-size:14px;}
   .card{background:var(--card); border:1px solid var(--line); border-radius:18px;
     padding:22px; box-shadow:0 14px 40px rgba(0,0,0,.35);}
-  /* start */
   .field{margin:14px 0;}
   .field label{display:block; font-size:14px; color:var(--sub); margin-bottom:6px;}
   input.name{width:100%; padding:13px 14px; border-radius:12px; border:1px solid var(--line);
@@ -32,20 +32,26 @@
   .btn:active{transform:scale(.98);}
   .btn.ghost{background:#334155; color:var(--txt);}
   .hint{font-size:12.5px; color:var(--sub); text-align:center; margin-top:12px; line-height:1.7;}
-  .hint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
+  .hint kbd, .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
     border-radius:6px; padding:1px 7px; font-size:11.5px; color:var(--accent);}
-  /* progress */
   .pbar{height:8px; background:#0b1426; border-radius:99px; overflow:hidden; margin-bottom:16px;}
   .pfill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0;
     transition:width .3s;}
   .qmeta{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
   .qno{font-weight:800; color:var(--accent); font-size:14px;}
   .qtype{font-size:12px; color:var(--sub); background:#0b1426; padding:3px 10px; border-radius:99px;}
-  .qtext{font-size:18px; line-height:1.55; margin:6px 0 18px; font-weight:600; white-space:pre-wrap;}
+  .qtext{font-size:18px; line-height:1.55; margin:6px 0 12px; font-weight:600; white-space:pre-wrap;}
+  /* help box */
+  .help{background:#231f10; border:1px solid #5c4a12; border-radius:13px; padding:12px 14px;
+    margin:0 0 16px;}
+  .help .trans{font-size:14.5px; color:#fde68a; line-height:1.6; white-space:pre-wrap;}
+  .help .vocab{margin-top:9px; display:flex; flex-wrap:wrap; gap:6px;}
+  .help .vchip{background:#0b1426; border:1px solid #5c4a12; color:#fcd34d; font-size:12.5px;
+    padding:4px 9px; border-radius:8px;}
   .opts{display:flex; flex-direction:column; gap:10px;}
   .opt{display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:13px;
     background:var(--card2); border:2px solid transparent; cursor:pointer; font-size:16px;
-    transition:.12s;}
+    line-height:1.45; transition:.12s;}
   .opt:hover{border-color:#3b4d6b;}
   .opt.sel{border-color:var(--accent); background:#15324a;}
   .opt .num{width:26px; height:26px; flex:none; border-radius:8px; background:#0b1426;
@@ -56,9 +62,6 @@
     background:#0b1426; color:var(--txt); font-size:17px;}
   input.ans:focus{outline:none; border-color:var(--accent);}
   .navhint{text-align:center; font-size:12.5px; color:var(--sub); margin-top:14px;}
-  .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
-    border-radius:6px; padding:1px 7px; color:var(--accent);}
-  /* result */
   .score-big{text-align:center; font-size:44px; font-weight:900; color:var(--accent); margin:6px 0;}
   .score-sub{text-align:center; color:var(--sub); margin-bottom:18px;}
   .rev{border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px;
@@ -67,9 +70,13 @@
   .rev.wrong{border-left:5px solid var(--bad);}
   .rev .rno{font-size:13px; font-weight:800; margin-bottom:6px;}
   .rev.correct .rno{color:var(--good);} .rev.wrong .rno{color:var(--bad);}
-  .rev .q{font-size:15px; margin-bottom:8px; white-space:pre-wrap;}
+  .rev .q{font-size:15px; margin-bottom:6px; white-space:pre-wrap;}
+  .rev .rtrans{font-size:13.5px;color:#fde68a;margin-bottom:8px;line-height:1.55;white-space:pre-wrap;}
   .rev .line{font-size:14px; margin:3px 0;}
   .rev .yours{color:#fda4af;} .rev .right{color:#86efac;}
+  .rev .rvocab{margin:8px 0; display:flex; flex-wrap:wrap; gap:6px;}
+  .rev .rvocab span{background:#231f10;border:1px solid #5c4a12;color:#fcd34d;font-size:12px;
+    padding:3px 8px;border-radius:7px;}
   .rev .exp{margin-top:8px; font-size:13.5px; color:#cbd5e1; line-height:1.6;
     background:#111c33; border-radius:9px; padding:9px 11px;}
   .outro{text-align:center; font-size:20px; font-weight:800; margin:22px 0 6px; color:var(--accent2);}
@@ -90,15 +97,16 @@
     <div class="sub">숭의중 2학년 · 지나티처 내신대비 변형문제</div>
   </header>
 
-  <!-- START -->
   <section id="start" class="card">
     <div class="field">
       <label>이름을 입력하세요</label>
       <input class="name" id="nameInput" placeholder="예: 천율민" autocomplete="off">
     </div>
-    <p class="sub" style="font-size:13.5px; line-height:1.6;">
-      총 <b id="qcount">0</b>문제예요. 한 문제씩 풀고 <b>모두 제출하면</b> 정답과 해설을 볼 수 있어요.
-      반복해서 풀면 자연스럽게 외워진답니다 💪
+    <p class="sub" style="font-size:13.5px; line-height:1.7;">
+      총 <b id="qcount">0</b>문제예요. 😊<br>
+      문제마다 <b style="color:#fcd34d;">한글 해석</b>과 <b style="color:#fcd34d;">단어 뜻</b>이 같이 나오니까
+      천천히 읽어보면 돼요. 모르는 건 당연해요!<br>
+      모두 풀고 제출하면 정답과 친절한 해설을 볼 수 있어요. 화이팅 💪
     </p>
     <button class="btn" id="startBtn">시작하기 ▶</button>
     <p class="hint">
@@ -106,7 +114,6 @@
     </p>
   </section>
 
-  <!-- QUIZ -->
   <section id="quiz" class="card hidden">
     <div class="pbar"><div class="pfill" id="pfill"></div></div>
     <div class="qmeta">
@@ -114,12 +121,12 @@
       <span class="qtype" id="qtype"></span>
     </div>
     <div class="qtext" id="qtext"></div>
+    <div id="help"></div>
     <div id="answerArea"></div>
     <button class="btn" id="nextBtn" style="margin-top:18px;">다음 ▶</button>
     <p class="navhint"><kbd>Enter</kbd> 로 다음 문제 · 객관식은 숫자키로 선택</p>
   </section>
 
-  <!-- RESULT -->
   <section id="result" class="card hidden">
     <div class="score-big" id="scoreBig"></div>
     <div class="score-sub" id="scoreSub"></div>
@@ -133,35 +140,24 @@
 <div class="toast" id="toast">복사됐어요! 카톡에 붙여넣기 하세요 ✅</div>
 
 <script>
-const QUIZ = [{"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a room with special equipment for doing scientific tests\"", "options": ["volcano", "lab", "ash", "crop"], "answer": 1, "exp": "과학 실험을 하는 특별한 장비가 있는 방 = lab (실험실)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"gray powder left after something is burned\"", "options": ["ash", "crop", "forecast", "coin"], "answer": 0, "exp": "무언가 탄 뒤 남는 회색 가루 = ash (재)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to break apart violently and suddenly\"", "options": ["invent", "set up", "explode", "forecast"], "answer": 2, "exp": "갑자기 격렬하게 터지다 = explode (폭발하다). 명사형 explosion(폭발)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to place something in position\"", "options": ["set up", "explode", "invent", "forecast"], "answer": 0, "exp": "무언가를 제자리에 두다·설치하다 = set up"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to create or design something for the first time\"", "options": ["forecast", "invent", "explode", "set up"], "answer": 1, "exp": "처음으로 무언가를 만들어내다 = invent (발명하다)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a statement about what will happen in the future\"", "options": ["forecast", "volcano", "necessity", "crop"], "answer": 0, "exp": "미래에 일어날 일에 대한 진술 = forecast (예보, 예측)"}, {"type": "mc", "q": "영영풀이에 알맞은 표현은? \"because of something (그 결과로)\"", "options": ["set up", "as a result", "world-famous", "explode"], "answer": 1, "exp": "as a result = 그 결과로, ~때문에"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a mountain with a hole that can send out lava, ash, and gas\"", "options": ["crop", "lab", "volcano", "forecast"], "answer": 2, "exp": "용암·재·가스를 내뿜는 구멍이 있는 산 = volcano (화산)"}, {"type": "mc", "q": "빈칸에 알맞은 말은? The ______ toast tasted bitter.", "options": ["world-famous", "burnt", "crop", "necessity"], "answer": 1, "exp": "burnt = 탄, 그을린. 탄 토스트는 쓴맛이 났다."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Haruki Murakami is a ______ writer.", "options": ["burnt", "crop", "world-famous", "necessity"], "answer": 2, "exp": "world-famous = 세계적으로 유명한. 무라카미 하루키는 세계적으로 유명한 작가다."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Rice is an important ______ in many Asian countries.", "options": ["crop", "necessity", "forecast", "ash"], "answer": 0, "exp": "crop = 농작물. 쌀은 많은 아시아 국가에서 중요한 농작물이다."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Clean water is a ______ in every country.", "options": ["crop", "burnt", "necessity", "forecast"], "answer": 2, "exp": "necessity = 필수품, 필요. 깨끗한 물은 모든 나라에서 필수다."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (폭발)\n그 폭발로 큰 불이 났다. → The ______ made a big fire.", "accept": ["explosion"], "exp": "explosion = 폭발 (동사 explode의 명사형). The explosion made a big fire."}, {"type": "short", "q": "빈칸을 채우세요. (그 당시에)\n그 당시에, 사람들은 스마트폰이 없었다. → ______ ______ ______, people didn't have smartphones.", "accept": ["at that time"], "exp": "at that time = 그 당시에. At that time, people didn't have smartphones."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (~하는 동안)\n그들은 폭풍이 치는 동안 집 안에 머물렀다. → They stayed inside the house ______ the storm.", "accept": ["during"], "exp": "during + 명사 = ~하는 동안. during the storm = 폭풍이 치는 동안."}];
+const QUIZ = [{"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a room with special equipment for doing scientific tests\"", "options": ["volcano (화산)", "lab (실험실)", "ash (재)", "crop (농작물)"], "answer": 1, "t": "영영풀이 해석: '과학 실험을 하는 특별한 장비가 있는 방'", "v": ["room = 방", "equipment = 장비", "scientific tests = 과학 실험", "lab = 실험실"], "exp": "과학 실험을 하는 방 = lab (실험실)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"gray powder left after something is burned\"", "options": ["ash (재)", "crop (농작물)", "forecast (예보)", "coin (동전)"], "answer": 0, "t": "영영풀이 해석: '무언가 탄 뒤에 남는 회색 가루'", "v": ["gray powder = 회색 가루", "burned = 탄", "ash = 재"], "exp": "탄 뒤 남는 회색 가루 = ash (재)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to break apart violently and suddenly\"", "options": ["invent (발명하다)", "set up (설치하다)", "explode (폭발하다)", "forecast (예보하다)"], "answer": 2, "t": "영영풀이 해석: '갑자기 격렬하게 터지다'", "v": ["break apart = 부서지다", "violently = 격렬하게", "suddenly = 갑자기", "explode = 폭발하다"], "exp": "갑자기 격렬하게 터지다 = explode (폭발하다). 명사형은 explosion(폭발)."}, {"type": "mc", "q": "영영풀이에 알맞은 표현은? \"to place something in position\"", "options": ["set up (설치하다)", "explode (폭발하다)", "invent (발명하다)", "forecast (예보하다)"], "answer": 0, "t": "영영풀이 해석: '무언가를 제자리에 두다, 설치하다'", "v": ["place = 두다", "position = 위치, 자리", "set up = 설치하다"], "exp": "제자리에 두다·설치하다 = set up"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to create or design something for the first time\"", "options": ["forecast (예보하다)", "invent (발명하다)", "explode (폭발하다)", "set up (설치하다)"], "answer": 1, "t": "영영풀이 해석: '무언가를 처음으로 만들어내다'", "v": ["create = 만들다", "design = 설계하다", "for the first time = 처음으로", "invent = 발명하다"], "exp": "처음으로 만들어내다 = invent (발명하다)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a statement about what will happen in the future\"", "options": ["forecast (예보)", "volcano (화산)", "necessity (필수품)", "crop (농작물)"], "answer": 0, "t": "영영풀이 해석: '미래에 일어날 일에 대한 진술'", "v": ["statement = 진술", "will happen = 일어날 것이다", "future = 미래", "forecast = 예보, 예측"], "exp": "미래 일에 대한 진술 = forecast (예보)"}, {"type": "mc", "q": "영영풀이에 알맞은 표현은? \"because of something (그 결과로)\"", "options": ["set up (설치하다)", "as a result (그 결과로)", "world-famous (세계적인)", "explode (폭발하다)"], "answer": 1, "t": "영영풀이 해석: '무언가 때문에, 그 결과로'", "v": ["because of = ~때문에", "as a result = 그 결과로"], "exp": "그 결과로 = as a result"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a mountain that can send out lava, ash, and gas\"", "options": ["crop (농작물)", "lab (실험실)", "volcano (화산)", "forecast (예보)"], "answer": 2, "t": "영영풀이 해석: '용암·재·가스를 내뿜을 수 있는 산'", "v": ["mountain = 산", "lava = 용암", "ash = 재", "gas = 가스", "volcano = 화산"], "exp": "용암·재·가스를 내뿜는 산 = volcano (화산)"}, {"type": "mc", "q": "빈칸에 알맞은 말은? The ______ toast tasted bitter.", "options": ["world-famous (세계적인)", "burnt (탄)", "crop (농작물)", "necessity (필수품)"], "answer": 1, "t": "탄 토스트는 쓴맛이 났어요.", "v": ["burnt = 탄, 그을린", "toast = 토스트", "tasted = 맛이 났다", "bitter = 쓴"], "exp": "burnt = 탄, 그을린."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Haruki Murakami is a ______ writer.", "options": ["burnt (탄)", "crop (농작물)", "world-famous (세계적으로 유명한)", "necessity (필수품)"], "answer": 2, "t": "무라카미 하루키는 세계적으로 유명한 작가예요.", "v": ["world-famous = 세계적으로 유명한", "writer = 작가"], "exp": "world-famous = 세계적으로 유명한."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Rice is an important ______ in many Asian countries.", "options": ["crop (농작물)", "necessity (필수품)", "forecast (예보)", "ash (재)"], "answer": 0, "t": "쌀은 많은 아시아 국가에서 중요한 농작물이에요.", "v": ["rice = 쌀", "important = 중요한", "crop = 농작물", "Asian countries = 아시아 국가"], "exp": "crop = 농작물."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Clean water is a ______ in every country.", "options": ["crop (농작물)", "burnt (탄)", "necessity (필수품)", "forecast (예보)"], "answer": 2, "t": "깨끗한 물은 모든 나라에서 필수품이에요.", "v": ["clean = 깨끗한", "water = 물", "necessity = 필수품", "every country = 모든 나라"], "exp": "necessity = 필수품, 꼭 필요한 것."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (폭발 = explode의 명사형)\n그 폭발로 큰 불이 났다. → The ______ made a big fire.", "accept": ["explosion"], "t": "우리말: 그 폭발로 큰 불이 났다.", "v": ["explosion = 폭발 (explode의 명사형)", "made = 만들었다", "big fire = 큰 불"], "exp": "explosion = 폭발. The explosion made a big fire."}, {"type": "short", "q": "빈칸을 채우세요. (그 당시에 = at that ____)\n그 당시에, 사람들은 스마트폰이 없었다. → ______ ______ ______, people didn't have smartphones.", "accept": ["at that time"], "t": "우리말: 그 당시에, 사람들은 스마트폰이 없었다.", "v": ["at that time = 그 당시에", "people = 사람들", "smartphones = 스마트폰"], "exp": "at that time = 그 당시에. At that time, people didn't have smartphones."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (~하는 동안)\n그들은 폭풍이 치는 동안 집 안에 머물렀다. → They stayed inside the house ______ the storm.", "accept": ["during"], "t": "우리말: 그들은 폭풍이 치는 동안 집 안에 머물렀다.", "v": ["stayed = 머물렀다", "inside = ~안에", "during = ~하는 동안", "storm = 폭풍"], "exp": "during + 명사 = ~하는 동안. during the storm = 폭풍이 치는 동안."}];
 const TITLE = "Lesson 3 Vocabulary 변형문제 (Advanced)";
-
 const $=id=>document.getElementById(id);
 let idx=0, answers=[], studentName="";
 
-function norm(s){
-  return (s||"").toLowerCase().trim()
-    .replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");
-}
-function isShortCorrect(q,val){
-  const n=norm(val);
-  if(!n) return false;
-  return (q.accept||[]).some(a=>norm(a)===n);
-}
+function norm(s){return (s||"").toLowerCase().trim().replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");}
+function isShortCorrect(q,val){const n=norm(val); if(!n) return false; return (q.accept||[]).some(a=>norm(a)===n);}
+function vocabHtml(v){ if(!v||!v.length) return ""; return `<div class="vocab">`+v.map(w=>`<span class="vchip">${w}</span>`).join("")+`</div>`; }
 
 $("qcount").textContent=QUIZ.length;
-
 $("startBtn").onclick=start;
 $("nameInput").addEventListener("keydown",e=>{ if(e.key==="Enter") start(); });
 
 function start(){
-  const nm=$("nameInput").value.trim();
-  studentName = nm || "학생";
+  studentName = $("nameInput").value.trim() || "학생";
   idx=0; answers=new Array(QUIZ.length).fill(null);
-  $("start").classList.add("hidden");
-  $("result").classList.add("hidden");
-  $("quiz").classList.remove("hidden");
-  render();
+  $("start").classList.add("hidden"); $("result").classList.add("hidden");
+  $("quiz").classList.remove("hidden"); render();
 }
 
 function render(){
@@ -170,6 +166,7 @@ function render(){
   $("qno").textContent=`${idx+1} / ${QUIZ.length}`;
   $("qtype").textContent = q.type==="mc" ? "객관식" : "주관식";
   $("qtext").textContent=q.q;
+  $("help").innerHTML = `<div class="help"><div class="trans">📖 ${q.t}</div>${vocabHtml(q.v)}</div>`;
   const area=$("answerArea"); area.innerHTML="";
   if(q.type==="mc"){
     const box=document.createElement("div"); box.className="opts";
@@ -177,95 +174,68 @@ function render(){
       const d=document.createElement("div"); d.className="opt"; d.dataset.i=i;
       if(answers[idx]===i) d.classList.add("sel");
       d.innerHTML=`<span class="num">${i+1}</span><span>${op}</span>`;
-      d.onclick=()=>selectMc(i);
-      box.appendChild(d);
+      d.onclick=()=>selectMc(i); box.appendChild(d);
     });
     area.appendChild(box);
   }else{
     const inp=document.createElement("input");
-    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 쓰세요";
+    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 써 보세요 (천천히!)";
     inp.autocomplete="off"; inp.value = answers[idx]||"";
-    area.appendChild(inp);
-    setTimeout(()=>inp.focus(),30);
+    area.appendChild(inp); setTimeout(()=>inp.focus(),30);
   }
   $("nextBtn").textContent = (idx===QUIZ.length-1) ? "결과 보기 ▶" : "다음 ▶";
 }
 
 function selectMc(i){
   answers[idx]=i;
-  document.querySelectorAll(".opt").forEach(o=>{
-    o.classList.toggle("sel", parseInt(o.dataset.i)===i);
-  });
+  document.querySelectorAll(".opt").forEach(o=>o.classList.toggle("sel", parseInt(o.dataset.i)===i));
 }
-
-function saveShort(){
-  const inp=$("shortInput");
-  if(inp) answers[idx]=inp.value;
-}
-
+function saveShort(){ const inp=$("shortInput"); if(inp) answers[idx]=inp.value; }
 function next(){
-  const q=QUIZ[idx];
-  if(q.type==="short") saveShort();
-  if(idx<QUIZ.length-1){ idx++; render(); }
-  else finish();
+  const q=QUIZ[idx]; if(q.type==="short") saveShort();
+  if(idx<QUIZ.length-1){ idx++; render(); } else finish();
 }
 $("nextBtn").onclick=next;
 
 document.addEventListener("keydown",e=>{
   if(!$("quiz").classList.contains("hidden")){
     const q=QUIZ[idx];
-    if(q.type==="mc" && /^[1-9]$/.test(e.key)){
-      const n=parseInt(e.key);
-      if(n<=q.options.length){ selectMc(n-1); }
-    }
+    if(q.type==="mc" && /^[1-9]$/.test(e.key)){ const n=parseInt(e.key); if(n<=q.options.length) selectMc(n-1); }
     if(e.key==="Enter"){ e.preventDefault(); next(); }
   }
 });
 
 function finish(){
-  let correct=0;
-  const rev=$("review"); rev.innerHTML="";
+  let correct=0; const rev=$("review"); rev.innerHTML="";
   QUIZ.forEach((q,i)=>{
     let ok=false, yours="";
-    if(q.type==="mc"){
-      const a=answers[i];
-      yours = (a==null)?"(무응답)":`${a+1}. ${q.options[a]}`;
-      ok = (a===q.answer);
-    }else{
-      yours = answers[i]? answers[i] : "(무응답)";
-      ok = isShortCorrect(q, answers[i]);
-    }
+    if(q.type==="mc"){ const a=answers[i]; yours=(a==null)?"(무응답)":`${a+1}. ${q.options[a]}`; ok=(a===q.answer); }
+    else{ yours=answers[i]?answers[i]:"(무응답)"; ok=isShortCorrect(q,answers[i]); }
     if(ok) correct++;
     const div=document.createElement("div");
     div.className="rev "+(ok?"correct":"wrong");
     let rightTxt = q.type==="mc" ? `${q.answer+1}. ${q.options[q.answer]}` : q.accept[0];
+    let vchips = (q.v&&q.v.length)?`<div class="rvocab">`+q.v.map(w=>`<span>${w}</span>`).join("")+`</div>`:"";
     div.innerHTML = `<div class="rno">${i+1}번 ${ok?"⭕ 정답":"❌ 오답"}</div>
-      <div class="q">${q.q}</div>`+
+      <div class="q">${q.q}</div>
+      <div class="rtrans">📖 ${q.t}</div>`+
       (ok? `<div class="line right">✔ 내 답: ${yours}</div>`
-         : `<div class="line yours">✖ 내 답: ${yours}</div>
-            <div class="line right">정답: ${rightTxt}</div>`)+
-      `<div class="exp">💡 ${q.exp}</div>`;
+         : `<div class="line yours">✖ 내 답: ${yours}</div><div class="line right">정답: ${rightTxt}</div>`)+
+      vchips + `<div class="exp">💡 ${q.exp}</div>`;
     rev.appendChild(div);
   });
-  const total=QUIZ.length;
-  const score=Math.round(correct/total*100);
+  const total=QUIZ.length, score=Math.round(correct/total*100);
   $("scoreBig").textContent=`${correct} / ${total}`;
   $("scoreSub").textContent=`${score}점 · ${studentName} 학생`;
-  $("quiz").classList.add("hidden");
-  $("result").classList.remove("hidden");
-  window.scrollTo(0,0);
-  buildCopy(correct,total,score);
+  $("quiz").classList.add("hidden"); $("result").classList.remove("hidden");
+  window.scrollTo(0,0); buildCopy(correct,total,score);
 }
 
 let copyText="";
 function buildCopy(correct,total,score){
   const wrongs=[];
-  QUIZ.forEach((q,i)=>{
-    let ok = q.type==="mc" ? (answers[i]===q.answer) : isShortCorrect(q,answers[i]);
-    if(!ok) wrongs.push(i+1);
-  });
-  copyText =
-`[지나티처 결과 보고 📨]
+  QUIZ.forEach((q,i)=>{ let ok=q.type==="mc"?(answers[i]===q.answer):isShortCorrect(q,answers[i]); if(!ok) wrongs.push(i+1); });
+  copyText=`[지나티처 결과 보고 📨]
 프린트: ${TITLE}
 이름: ${studentName}
 점수: ${correct}/${total} (${score}점)
@@ -274,22 +244,12 @@ function buildCopy(correct,total,score){
 수고했습니당 ~~~ ㅎㅎㅎ`;
   $("copyPreview").textContent=copyText;
 }
-
 $("copyBtn").onclick=async()=>{
   try{ await navigator.clipboard.writeText(copyText); }
-  catch(e){
-    const t=document.createElement("textarea"); t.value=copyText;
-    document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
-  }
-  const toast=$("toast"); toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),1800);
+  catch(e){ const t=document.createElement("textarea"); t.value=copyText; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  const toast=$("toast"); toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),1800);
 };
-
-$("retryBtn").onclick=()=>{
-  $("result").classList.add("hidden");
-  $("start").classList.remove("hidden");
-  window.scrollTo(0,0);
-};
+$("retryBtn").onclick=()=>{ $("result").classList.add("hidden"); $("start").classList.remove("hidden"); window.scrollTo(0,0); };
 </script>
 </body>
 </html>

@@ -8,6 +8,7 @@
   :root{
     --bg:#0f172a; --card:#1e293b; --card2:#243149; --accent:#38bdf8; --accent2:#22d3ee;
     --good:#22c55e; --bad:#f43f5e; --txt:#e2e8f0; --sub:#94a3b8; --line:#334155;
+    --help:#facc15;
   }
   *{box-sizing:border-box;}
   body{margin:0; background:linear-gradient(160deg,#0f172a,#111c33); color:var(--txt);
@@ -20,7 +21,6 @@
   .sub{color:var(--sub); font-size:14px;}
   .card{background:var(--card); border:1px solid var(--line); border-radius:18px;
     padding:22px; box-shadow:0 14px 40px rgba(0,0,0,.35);}
-  /* start */
   .field{margin:14px 0;}
   .field label{display:block; font-size:14px; color:var(--sub); margin-bottom:6px;}
   input.name{width:100%; padding:13px 14px; border-radius:12px; border:1px solid var(--line);
@@ -32,20 +32,26 @@
   .btn:active{transform:scale(.98);}
   .btn.ghost{background:#334155; color:var(--txt);}
   .hint{font-size:12.5px; color:var(--sub); text-align:center; margin-top:12px; line-height:1.7;}
-  .hint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
+  .hint kbd, .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
     border-radius:6px; padding:1px 7px; font-size:11.5px; color:var(--accent);}
-  /* progress */
   .pbar{height:8px; background:#0b1426; border-radius:99px; overflow:hidden; margin-bottom:16px;}
   .pfill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0;
     transition:width .3s;}
   .qmeta{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
   .qno{font-weight:800; color:var(--accent); font-size:14px;}
   .qtype{font-size:12px; color:var(--sub); background:#0b1426; padding:3px 10px; border-radius:99px;}
-  .qtext{font-size:18px; line-height:1.55; margin:6px 0 18px; font-weight:600; white-space:pre-wrap;}
+  .qtext{font-size:18px; line-height:1.55; margin:6px 0 12px; font-weight:600; white-space:pre-wrap;}
+  /* help box */
+  .help{background:#231f10; border:1px solid #5c4a12; border-radius:13px; padding:12px 14px;
+    margin:0 0 16px;}
+  .help .trans{font-size:14.5px; color:#fde68a; line-height:1.6; white-space:pre-wrap;}
+  .help .vocab{margin-top:9px; display:flex; flex-wrap:wrap; gap:6px;}
+  .help .vchip{background:#0b1426; border:1px solid #5c4a12; color:#fcd34d; font-size:12.5px;
+    padding:4px 9px; border-radius:8px;}
   .opts{display:flex; flex-direction:column; gap:10px;}
   .opt{display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:13px;
     background:var(--card2); border:2px solid transparent; cursor:pointer; font-size:16px;
-    transition:.12s;}
+    line-height:1.45; transition:.12s;}
   .opt:hover{border-color:#3b4d6b;}
   .opt.sel{border-color:var(--accent); background:#15324a;}
   .opt .num{width:26px; height:26px; flex:none; border-radius:8px; background:#0b1426;
@@ -56,9 +62,6 @@
     background:#0b1426; color:var(--txt); font-size:17px;}
   input.ans:focus{outline:none; border-color:var(--accent);}
   .navhint{text-align:center; font-size:12.5px; color:var(--sub); margin-top:14px;}
-  .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
-    border-radius:6px; padding:1px 7px; color:var(--accent);}
-  /* result */
   .score-big{text-align:center; font-size:44px; font-weight:900; color:var(--accent); margin:6px 0;}
   .score-sub{text-align:center; color:var(--sub); margin-bottom:18px;}
   .rev{border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px;
@@ -67,9 +70,13 @@
   .rev.wrong{border-left:5px solid var(--bad);}
   .rev .rno{font-size:13px; font-weight:800; margin-bottom:6px;}
   .rev.correct .rno{color:var(--good);} .rev.wrong .rno{color:var(--bad);}
-  .rev .q{font-size:15px; margin-bottom:8px; white-space:pre-wrap;}
+  .rev .q{font-size:15px; margin-bottom:6px; white-space:pre-wrap;}
+  .rev .rtrans{font-size:13.5px;color:#fde68a;margin-bottom:8px;line-height:1.55;white-space:pre-wrap;}
   .rev .line{font-size:14px; margin:3px 0;}
   .rev .yours{color:#fda4af;} .rev .right{color:#86efac;}
+  .rev .rvocab{margin:8px 0; display:flex; flex-wrap:wrap; gap:6px;}
+  .rev .rvocab span{background:#231f10;border:1px solid #5c4a12;color:#fcd34d;font-size:12px;
+    padding:3px 8px;border-radius:7px;}
   .rev .exp{margin-top:8px; font-size:13.5px; color:#cbd5e1; line-height:1.6;
     background:#111c33; border-radius:9px; padding:9px 11px;}
   .outro{text-align:center; font-size:20px; font-weight:800; margin:22px 0 6px; color:var(--accent2);}
@@ -90,15 +97,16 @@
     <div class="sub">숭의중 2학년 · 지나티처 내신대비 변형문제</div>
   </header>
 
-  <!-- START -->
   <section id="start" class="card">
     <div class="field">
       <label>이름을 입력하세요</label>
       <input class="name" id="nameInput" placeholder="예: 천율민" autocomplete="off">
     </div>
-    <p class="sub" style="font-size:13.5px; line-height:1.6;">
-      총 <b id="qcount">0</b>문제예요. 한 문제씩 풀고 <b>모두 제출하면</b> 정답과 해설을 볼 수 있어요.
-      반복해서 풀면 자연스럽게 외워진답니다 💪
+    <p class="sub" style="font-size:13.5px; line-height:1.7;">
+      총 <b id="qcount">0</b>문제예요. 😊<br>
+      문제마다 <b style="color:#fcd34d;">한글 해석</b>과 <b style="color:#fcd34d;">단어 뜻</b>이 같이 나오니까
+      천천히 읽어보면 돼요. 모르는 건 당연해요!<br>
+      모두 풀고 제출하면 정답과 친절한 해설을 볼 수 있어요. 화이팅 💪
     </p>
     <button class="btn" id="startBtn">시작하기 ▶</button>
     <p class="hint">
@@ -106,7 +114,6 @@
     </p>
   </section>
 
-  <!-- QUIZ -->
   <section id="quiz" class="card hidden">
     <div class="pbar"><div class="pfill" id="pfill"></div></div>
     <div class="qmeta">
@@ -114,12 +121,12 @@
       <span class="qtype" id="qtype"></span>
     </div>
     <div class="qtext" id="qtext"></div>
+    <div id="help"></div>
     <div id="answerArea"></div>
     <button class="btn" id="nextBtn" style="margin-top:18px;">다음 ▶</button>
     <p class="navhint"><kbd>Enter</kbd> 로 다음 문제 · 객관식은 숫자키로 선택</p>
   </section>
 
-  <!-- RESULT -->
   <section id="result" class="card hidden">
     <div class="score-big" id="scoreBig"></div>
     <div class="score-sub" id="scoreSub"></div>
@@ -133,35 +140,24 @@
 <div class="toast" id="toast">복사됐어요! 카톡에 붙여넣기 하세요 ✅</div>
 
 <script>
-const QUIZ = [{"type": "mc", "q": "The Audeum Audio Museum was founded by entrepreneur ______ to commemorate his late father.", "options": ["Kengo Kuma", "Chung Mong-jin", "Thomas Edison", "Steve Jobs"], "answer": 1, "exp": "기업가 Chung Mong-jin이 돌아가신 아버지를 기리기 위해 설립했어요. (Kengo Kuma는 건축가)"}, {"type": "mc", "q": "세계 최초의 오디오 박물관은 어느 도시에 문을 열었나요?", "options": ["부산", "인천", "서울", "대구"], "answer": 2, "exp": "The world's first audio museum opened in Seoul this summer. → 서울"}, {"type": "mc", "q": "박물관 건물을 설계한 건축가(architect)는 누구인가요?", "options": ["Chung Mong-jin", "Kengo Kuma", "Antoni Gaudí", "I. M. Pei"], "answer": 1, "exp": "The building, designed by architect Kengo Kuma, features a unique entrance."}, {"type": "mc", "q": "박물관의 독특한 입구(entrance)는 무엇이 건물 앞에 매달린 것처럼 보이나요?", "options": ["organ pipes (오르간 파이프)", "glass windows (유리창)", "colorful lights (색색의 조명)", "picture frames (액자)"], "answer": 0, "exp": "It appears as though hundreds of organ pipes are hanging over the front of the building."}, {"type": "mc", "q": "박물관은 몇 층 건물인가요?", "options": ["5층", "6층", "7층", "10층"], "answer": 2, "exp": "Inside the seven-story building → 7층 건물이에요."}, {"type": "mc", "q": "전시는 몇 년의 축음기(phonograph) 발명부터 오디오의 진화를 보여주나요?", "options": ["1850", "1877", "1900", "1920"], "answer": 1, "exp": "the evolution of audio from the invention of the phonograph in 1877 to present-day sound systems."}, {"type": "mc", "q": "박물관의 첫 번째 전시 제목은 무엇인가요?", "options": ["\"The World of Sound\"", "\"History of Hi-Fi\"", "\"The Journey of Sound: True Tone\"", "\"True Audio Forever\""], "answer": 2, "exp": "The museum's first exhibition is titled \"The Journey of Sound: True Tone.\""}, {"type": "mc", "q": "이 첫 전시는 무엇의 창조(creation)를 기념하나요?", "options": ["digital sound", "high-fidelity (hi-fi) sound", "surround sound", "vintage radio"], "answer": 1, "exp": "This exhibition celebrates the creation of high-fidelity (hi-fi) sound."}, {"type": "mc", "q": "박물관은 서초구에 있으며 어느 산 가까이에 위치하나요?", "options": ["북한산", "청계산(Cheonggyesan)", "한라산", "설악산"], "answer": 1, "exp": "Located in Seocho-gu, the museum sits near Cheonggyesan Mountain."}, {"type": "mc", "q": "방문객(visitors)들은 무엇을 하도록 권장되나요?", "options": ["사진을 많이 찍도록", "예약(appointment)을 하도록", "자신의 장비를 가져오도록", "기념품을 사도록"], "answer": 1, "exp": "Visitors are encouraged to book an appointment and discover the history of audio equipment."}, {"type": "mc", "q": "단어 'entrepreneur'의 우리말 뜻으로 알맞은 것은?", "options": ["건축가", "사업가·기업가", "음악가", "과학자"], "answer": 1, "exp": "entrepreneur = 기업가, 사업가"}, {"type": "mc", "q": "단어 'commemorate'의 뜻으로 알맞은 것은?", "options": ["기념하다", "발명하다", "전시하다", "격려하다"], "answer": 0, "exp": "commemorate = 기념하다, 기리다"}, {"type": "mc", "q": "단어 'enthusiast'의 뜻으로 알맞은 것은?", "options": ["초보자", "애호가·열성팬", "방문객", "전문 비평가"], "answer": 1, "exp": "enthusiast = (특정 분야에) 열성적인 사람, 애호가"}, {"type": "mc", "q": "단어 'glimpse'의 뜻으로 알맞은 것은?", "options": ["잠깐 봄, 일별", "큰 소리", "오래된 기계", "넓은 공간"], "answer": 0, "exp": "glimpse = 잠깐 봄, 흘끗 봄. get a glimpse of ~ = ~을 잠깐 보다"}, {"type": "mc", "q": "단어 'spokesperson'의 뜻으로 알맞은 것은?", "options": ["관람객", "대변인", "설립자", "건축가"], "answer": 1, "exp": "spokesperson = 대변인"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a person who designs buildings\"", "options": ["enthusiast", "architect", "entrepreneur", "spokesperson"], "answer": 1, "exp": "건물을 설계하는 사람 = architect (건축가)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"existing or happening now, rather than in the past\"", "options": ["present-day", "unique", "late", "found"], "answer": 0, "exp": "지금 존재·발생하는 = present-day (현재의)"}, {"type": "short", "q": "영영풀이를 보고 알맞은 단어를 쓰세요. \"to start or establish an organization, museum, or school\" (f로 시작)", "accept": ["found", "to found"], "exp": "기관·박물관·학교를 설립하다 = found (found-founded-founded). The museum was founded by ~"}, {"type": "short", "q": "영영풀이를 보고 알맞은 단어를 쓰세요. \"to find or learn something new that you did not know before\" (d로 시작)", "accept": ["discover", "to discover"], "exp": "전에 모르던 것을 새로 알게 되다 = discover (발견하다). discover the history of ~"}, {"type": "short", "q": "본문에 나온 이 오디오 박물관의 이름은 무엇인가요? (영어로)", "accept": ["audeum", "the audeum", "audeum audio museum", "the audeum audio museum"], "exp": "The Audeum Audio Museum — 세계 최초의 오디오 박물관 이름이에요."}];
+const QUIZ = [{"type": "mc", "q": "The Audeum Audio Museum was founded by entrepreneur ______ to commemorate his late father.", "options": ["Kengo Kuma (켄고 쿠마, 건축가)", "Chung Mong-jin (정몽진)", "Thomas Edison (에디슨)", "Steve Jobs (스티브 잡스)"], "answer": 1, "t": "오듐 오디오 박물관은 돌아가신 아버지를 기리기 위해 기업가 ______에 의해 세워졌어요.", "v": ["founded = 설립했다", "entrepreneur = 기업가, 사업가", "commemorate = 기념하다, 기리다", "late father = 돌아가신 아버지"], "exp": "기업가 Chung Mong-jin이 돌아가신 아버지를 기리기 위해 세웠어요. (Kengo Kuma는 건물을 설계한 건축가예요.)"}, {"type": "mc", "q": "세계 최초의 오디오 박물관은 어느 도시에 문을 열었나요?", "options": ["부산", "인천", "서울", "대구"], "answer": 2, "t": "본문: The world's first audio museum opened in Seoul this summer. (세계 최초의 오디오 박물관이 이번 여름 서울에 문을 열었어요.)", "v": ["world's first = 세계 최초의", "opened = 문을 열었다", "this summer = 이번 여름"], "exp": "opened in Seoul → 서울에 문을 열었어요."}, {"type": "mc", "q": "박물관 건물을 설계한 건축가(architect)는 누구인가요?", "options": ["Chung Mong-jin (정몽진)", "Kengo Kuma (켄고 쿠마)", "Antoni Gaudí (가우디)", "I. M. Pei (이오밍 페이)"], "answer": 1, "t": "본문: The building was designed by architect Kengo Kuma. (그 건물은 건축가 켄고 쿠마가 설계했어요.)", "v": ["designed = 설계했다", "architect = 건축가", "building = 건물"], "exp": "designed by architect Kengo Kuma → 건축가 Kengo Kuma가 설계했어요."}, {"type": "mc", "q": "박물관의 독특한 입구(entrance)는 무엇이 건물 앞에 매달린 것처럼 보이나요?", "options": ["organ pipes (오르간 파이프)", "glass windows (유리창)", "colorful lights (색색의 조명)", "picture frames (액자)"], "answer": 0, "t": "본문: It appears as though hundreds of organ pipes are hanging over the front. (수백 개의 오르간 파이프가 앞에 매달린 것처럼 보여요.)", "v": ["appears = ~처럼 보이다", "hundreds of = 수백 개의", "organ pipes = 오르간 파이프", "hanging = 매달려 있는", "front = 앞면"], "exp": "hundreds of organ pipes are hanging → 오르간 파이프가 매달려 있는 것처럼 보여요."}, {"type": "mc", "q": "박물관은 몇 층 건물인가요?", "options": ["5층", "6층", "7층", "10층"], "answer": 2, "t": "본문: Inside the seven-story building, exhibition spaces display audio equipment. (7층 건물 안에 전시 공간이 있어요.)", "v": ["seven-story = 7층짜리", "building = 건물", "exhibition = 전시", "inside = 안에"], "exp": "seven-story building → 7층 건물이에요."}, {"type": "mc", "q": "전시는 몇 년의 축음기(phonograph) 발명부터 오디오의 발전을 보여주나요?", "options": ["1850", "1877", "1900", "1920"], "answer": 1, "t": "본문: the evolution of audio from the invention of the phonograph in 1877. (1877년 축음기 발명부터 오디오의 발전.)", "v": ["evolution = 발전, 진화", "invention = 발명", "phonograph = 축음기", "present-day = 오늘날의"], "exp": "the invention of the phonograph in 1877 → 1877년이에요."}, {"type": "mc", "q": "박물관의 첫 번째 전시 제목은 무엇인가요?", "options": ["\"The World of Sound\"", "\"History of Hi-Fi\"", "\"The Journey of Sound: True Tone\"", "\"True Audio Forever\""], "answer": 2, "t": "본문: The first exhibition is titled \"The Journey of Sound: True Tone.\" (첫 전시 제목은 '소리의 여정: 참된 음색'이에요.)", "v": ["first = 첫 번째", "exhibition = 전시", "titled = ~라는 제목의", "journey = 여정", "tone = 음색"], "exp": "first exhibition is titled \"The Journey of Sound: True Tone\""}, {"type": "mc", "q": "이 첫 전시는 무엇의 탄생(creation)을 기념하나요?", "options": ["digital sound (디지털 소리)", "high-fidelity (hi-fi) sound (고음질 소리)", "surround sound (서라운드)", "vintage radio (옛날 라디오)"], "answer": 1, "t": "본문: This exhibition celebrates the creation of high-fidelity (hi-fi) sound. (이 전시는 고음질 소리의 탄생을 기념해요.)", "v": ["celebrates = 기념하다", "creation = 탄생, 창조", "high-fidelity(hi-fi) = 고음질, 하이파이"], "exp": "celebrates the creation of high-fidelity (hi-fi) sound → 고음질(hi-fi) 소리예요."}, {"type": "mc", "q": "박물관은 서초구에 있으며 어느 산 가까이에 위치하나요?", "options": ["북한산", "청계산 (Cheonggyesan)", "한라산", "설악산"], "answer": 1, "t": "본문: Located in Seocho-gu, the museum sits near Cheonggyesan Mountain. (서초구에 있고 청계산 가까이에 있어요.)", "v": ["located = 위치한", "near = ~ 가까이에", "mountain = 산"], "exp": "near Cheonggyesan Mountain → 청계산 가까이에 있어요."}, {"type": "mc", "q": "방문객(visitors)들은 무엇을 하도록 권장되나요?", "options": ["사진을 많이 찍도록", "예약(appointment)을 하도록", "자신의 장비를 가져오도록", "기념품을 사도록"], "answer": 1, "t": "본문: Visitors are encouraged to book an appointment and discover the history of audio equipment. (방문객은 예약을 하고 오디오 장비의 역사를 알아보도록 권장돼요.)", "v": ["visitors = 방문객", "encouraged = 권장되는", "book an appointment = 예약하다", "discover = 알아내다", "equipment = 장비"], "exp": "encouraged to book an appointment → 예약을 하도록 권장돼요."}, {"type": "mc", "q": "단어 'entrepreneur'의 우리말 뜻으로 알맞은 것은?", "options": ["건축가", "사업가·기업가", "음악가", "과학자"], "answer": 1, "t": "예문: The entrepreneur started a new company. (그 기업가는 새 회사를 시작했어요.)", "v": ["entrepreneur = 기업가, 사업가"], "exp": "entrepreneur = 기업가, 사업가"}, {"type": "mc", "q": "단어 'commemorate'의 뜻으로 알맞은 것은?", "options": ["기념하다", "발명하다", "전시하다", "격려하다"], "answer": 0, "t": "예문: We commemorate the heroes. (우리는 영웅들을 기념해요.)", "v": ["commemorate = 기념하다, 기리다"], "exp": "commemorate = 기념하다, 기리다"}, {"type": "mc", "q": "단어 'enthusiast'의 뜻으로 알맞은 것은?", "options": ["초보자", "애호가·열성팬", "방문객", "전문 비평가"], "answer": 1, "t": "예문: He is a music enthusiast. (그는 음악 애호가예요.)", "v": ["enthusiast = 애호가, 열성팬"], "exp": "enthusiast = (어떤 분야를 아주 좋아하는) 애호가, 열성팬"}, {"type": "mc", "q": "단어 'glimpse'의 뜻으로 알맞은 것은?", "options": ["잠깐 봄, 흘끗 봄", "큰 소리", "오래된 기계", "넓은 공간"], "answer": 0, "t": "예문: I got a glimpse of the sea. (나는 바다를 잠깐 봤어요.)", "v": ["glimpse = 잠깐 봄, 흘끗 봄", "get a glimpse of = ~을 잠깐 보다"], "exp": "glimpse = 잠깐 봄, 흘끗 봄"}, {"type": "mc", "q": "단어 'spokesperson'의 뜻으로 알맞은 것은?", "options": ["관람객", "대변인", "설립자", "건축가"], "answer": 1, "t": "예문: The spokesperson talked to reporters. (대변인이 기자들에게 말했어요.)", "v": ["spokesperson = 대변인"], "exp": "spokesperson = 대변인 (대표로 말하는 사람)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a person who designs buildings\"", "options": ["enthusiast (애호가)", "architect (건축가)", "entrepreneur (기업가)", "spokesperson (대변인)"], "answer": 1, "t": "영영풀이 해석: '건물을 설계하는 사람'", "v": ["person = 사람", "designs = 설계하다", "buildings = 건물들", "architect = 건축가"], "exp": "건물을 설계하는 사람 = architect (건축가)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"existing or happening now, rather than in the past\"", "options": ["present-day (현재의)", "unique (독특한)", "late (돌아가신)", "found (설립하다)"], "answer": 0, "t": "영영풀이 해석: '과거가 아니라 지금 존재하거나 일어나는'", "v": ["existing = 존재하는", "happening = 일어나는", "rather than = ~보다는", "past = 과거", "present-day = 현재의"], "exp": "지금 존재·발생하는 = present-day (현재의)"}, {"type": "short", "q": "영영풀이를 보고 알맞은 단어를 쓰세요. \"to start or establish an organization, museum, or school\" (f로 시작!)", "accept": ["found", "to found"], "t": "영영풀이 해석: '기관·박물관·학교를 시작하거나 세우다'", "v": ["start = 시작하다", "establish = 설립하다", "organization = 기관", "found = 설립하다"], "exp": "기관·박물관·학교를 세우다 = found. The museum was founded by ~ (박물관은 ~에 의해 세워졌어요.)"}, {"type": "short", "q": "영영풀이를 보고 알맞은 단어를 쓰세요. \"to find or learn something new that you did not know before\" (d로 시작!)", "accept": ["discover", "to discover"], "t": "영영풀이 해석: '전에 몰랐던 새로운 것을 찾거나 알게 되다'", "v": ["find = 찾다", "learn = 알게 되다", "new = 새로운", "before = 전에", "discover = 발견하다"], "exp": "전에 몰랐던 것을 새로 알다 = discover (발견하다)"}, {"type": "short", "q": "본문에 나온 이 오디오 박물관의 이름을 영어로 써 보세요. (힌트: A로 시작, '오듐')", "accept": ["audeum", "the audeum", "audeum audio museum", "the audeum audio museum"], "t": "본문: The Audeum Audio Museum (오듐 오디오 박물관) — 세계 최초의 오디오 박물관 이름이에요.", "v": ["museum = 박물관", "Audeum = 오듐 (박물관 이름)"], "exp": "박물관 이름은 Audeum 이에요."}];
 const TITLE = "World's First Audio Museum 리딩 변형문제";
-
 const $=id=>document.getElementById(id);
 let idx=0, answers=[], studentName="";
 
-function norm(s){
-  return (s||"").toLowerCase().trim()
-    .replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");
-}
-function isShortCorrect(q,val){
-  const n=norm(val);
-  if(!n) return false;
-  return (q.accept||[]).some(a=>norm(a)===n);
-}
+function norm(s){return (s||"").toLowerCase().trim().replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");}
+function isShortCorrect(q,val){const n=norm(val); if(!n) return false; return (q.accept||[]).some(a=>norm(a)===n);}
+function vocabHtml(v){ if(!v||!v.length) return ""; return `<div class="vocab">`+v.map(w=>`<span class="vchip">${w}</span>`).join("")+`</div>`; }
 
 $("qcount").textContent=QUIZ.length;
-
 $("startBtn").onclick=start;
 $("nameInput").addEventListener("keydown",e=>{ if(e.key==="Enter") start(); });
 
 function start(){
-  const nm=$("nameInput").value.trim();
-  studentName = nm || "학생";
+  studentName = $("nameInput").value.trim() || "학생";
   idx=0; answers=new Array(QUIZ.length).fill(null);
-  $("start").classList.add("hidden");
-  $("result").classList.add("hidden");
-  $("quiz").classList.remove("hidden");
-  render();
+  $("start").classList.add("hidden"); $("result").classList.add("hidden");
+  $("quiz").classList.remove("hidden"); render();
 }
 
 function render(){
@@ -170,6 +166,7 @@ function render(){
   $("qno").textContent=`${idx+1} / ${QUIZ.length}`;
   $("qtype").textContent = q.type==="mc" ? "객관식" : "주관식";
   $("qtext").textContent=q.q;
+  $("help").innerHTML = `<div class="help"><div class="trans">📖 ${q.t}</div>${vocabHtml(q.v)}</div>`;
   const area=$("answerArea"); area.innerHTML="";
   if(q.type==="mc"){
     const box=document.createElement("div"); box.className="opts";
@@ -177,95 +174,68 @@ function render(){
       const d=document.createElement("div"); d.className="opt"; d.dataset.i=i;
       if(answers[idx]===i) d.classList.add("sel");
       d.innerHTML=`<span class="num">${i+1}</span><span>${op}</span>`;
-      d.onclick=()=>selectMc(i);
-      box.appendChild(d);
+      d.onclick=()=>selectMc(i); box.appendChild(d);
     });
     area.appendChild(box);
   }else{
     const inp=document.createElement("input");
-    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 쓰세요";
+    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 써 보세요 (천천히!)";
     inp.autocomplete="off"; inp.value = answers[idx]||"";
-    area.appendChild(inp);
-    setTimeout(()=>inp.focus(),30);
+    area.appendChild(inp); setTimeout(()=>inp.focus(),30);
   }
   $("nextBtn").textContent = (idx===QUIZ.length-1) ? "결과 보기 ▶" : "다음 ▶";
 }
 
 function selectMc(i){
   answers[idx]=i;
-  document.querySelectorAll(".opt").forEach(o=>{
-    o.classList.toggle("sel", parseInt(o.dataset.i)===i);
-  });
+  document.querySelectorAll(".opt").forEach(o=>o.classList.toggle("sel", parseInt(o.dataset.i)===i));
 }
-
-function saveShort(){
-  const inp=$("shortInput");
-  if(inp) answers[idx]=inp.value;
-}
-
+function saveShort(){ const inp=$("shortInput"); if(inp) answers[idx]=inp.value; }
 function next(){
-  const q=QUIZ[idx];
-  if(q.type==="short") saveShort();
-  if(idx<QUIZ.length-1){ idx++; render(); }
-  else finish();
+  const q=QUIZ[idx]; if(q.type==="short") saveShort();
+  if(idx<QUIZ.length-1){ idx++; render(); } else finish();
 }
 $("nextBtn").onclick=next;
 
 document.addEventListener("keydown",e=>{
   if(!$("quiz").classList.contains("hidden")){
     const q=QUIZ[idx];
-    if(q.type==="mc" && /^[1-9]$/.test(e.key)){
-      const n=parseInt(e.key);
-      if(n<=q.options.length){ selectMc(n-1); }
-    }
+    if(q.type==="mc" && /^[1-9]$/.test(e.key)){ const n=parseInt(e.key); if(n<=q.options.length) selectMc(n-1); }
     if(e.key==="Enter"){ e.preventDefault(); next(); }
   }
 });
 
 function finish(){
-  let correct=0;
-  const rev=$("review"); rev.innerHTML="";
+  let correct=0; const rev=$("review"); rev.innerHTML="";
   QUIZ.forEach((q,i)=>{
     let ok=false, yours="";
-    if(q.type==="mc"){
-      const a=answers[i];
-      yours = (a==null)?"(무응답)":`${a+1}. ${q.options[a]}`;
-      ok = (a===q.answer);
-    }else{
-      yours = answers[i]? answers[i] : "(무응답)";
-      ok = isShortCorrect(q, answers[i]);
-    }
+    if(q.type==="mc"){ const a=answers[i]; yours=(a==null)?"(무응답)":`${a+1}. ${q.options[a]}`; ok=(a===q.answer); }
+    else{ yours=answers[i]?answers[i]:"(무응답)"; ok=isShortCorrect(q,answers[i]); }
     if(ok) correct++;
     const div=document.createElement("div");
     div.className="rev "+(ok?"correct":"wrong");
     let rightTxt = q.type==="mc" ? `${q.answer+1}. ${q.options[q.answer]}` : q.accept[0];
+    let vchips = (q.v&&q.v.length)?`<div class="rvocab">`+q.v.map(w=>`<span>${w}</span>`).join("")+`</div>`:"";
     div.innerHTML = `<div class="rno">${i+1}번 ${ok?"⭕ 정답":"❌ 오답"}</div>
-      <div class="q">${q.q}</div>`+
+      <div class="q">${q.q}</div>
+      <div class="rtrans">📖 ${q.t}</div>`+
       (ok? `<div class="line right">✔ 내 답: ${yours}</div>`
-         : `<div class="line yours">✖ 내 답: ${yours}</div>
-            <div class="line right">정답: ${rightTxt}</div>`)+
-      `<div class="exp">💡 ${q.exp}</div>`;
+         : `<div class="line yours">✖ 내 답: ${yours}</div><div class="line right">정답: ${rightTxt}</div>`)+
+      vchips + `<div class="exp">💡 ${q.exp}</div>`;
     rev.appendChild(div);
   });
-  const total=QUIZ.length;
-  const score=Math.round(correct/total*100);
+  const total=QUIZ.length, score=Math.round(correct/total*100);
   $("scoreBig").textContent=`${correct} / ${total}`;
   $("scoreSub").textContent=`${score}점 · ${studentName} 학생`;
-  $("quiz").classList.add("hidden");
-  $("result").classList.remove("hidden");
-  window.scrollTo(0,0);
-  buildCopy(correct,total,score);
+  $("quiz").classList.add("hidden"); $("result").classList.remove("hidden");
+  window.scrollTo(0,0); buildCopy(correct,total,score);
 }
 
 let copyText="";
 function buildCopy(correct,total,score){
   const wrongs=[];
-  QUIZ.forEach((q,i)=>{
-    let ok = q.type==="mc" ? (answers[i]===q.answer) : isShortCorrect(q,answers[i]);
-    if(!ok) wrongs.push(i+1);
-  });
-  copyText =
-`[지나티처 결과 보고 📨]
+  QUIZ.forEach((q,i)=>{ let ok=q.type==="mc"?(answers[i]===q.answer):isShortCorrect(q,answers[i]); if(!ok) wrongs.push(i+1); });
+  copyText=`[지나티처 결과 보고 📨]
 프린트: ${TITLE}
 이름: ${studentName}
 점수: ${correct}/${total} (${score}점)
@@ -274,22 +244,12 @@ function buildCopy(correct,total,score){
 수고했습니당 ~~~ ㅎㅎㅎ`;
   $("copyPreview").textContent=copyText;
 }
-
 $("copyBtn").onclick=async()=>{
   try{ await navigator.clipboard.writeText(copyText); }
-  catch(e){
-    const t=document.createElement("textarea"); t.value=copyText;
-    document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
-  }
-  const toast=$("toast"); toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),1800);
+  catch(e){ const t=document.createElement("textarea"); t.value=copyText; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  const toast=$("toast"); toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),1800);
 };
-
-$("retryBtn").onclick=()=>{
-  $("result").classList.add("hidden");
-  $("start").classList.remove("hidden");
-  window.scrollTo(0,0);
-};
+$("retryBtn").onclick=()=>{ $("result").classList.add("hidden"); $("start").classList.remove("hidden"); window.scrollTo(0,0); };
 </script>
 </body>
 </html>
