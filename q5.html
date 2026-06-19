@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 Vocabulary 변형문제 (Advanced)</title>
+<style>
+  :root{
+    --bg:#0f172a; --card:#1e293b; --card2:#243149; --accent:#38bdf8; --accent2:#22d3ee;
+    --good:#22c55e; --bad:#f43f5e; --txt:#e2e8f0; --sub:#94a3b8; --line:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:linear-gradient(160deg,#0f172a,#111c33); color:var(--txt);
+    font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif; min-height:100vh; padding:18px;}
+  .wrap{max-width:680px; margin:0 auto;}
+  header.top{text-align:center; margin-bottom:14px;}
+  .badge{display:inline-block; background:var(--accent); color:#04263a; font-weight:800;
+    font-size:13px; padding:4px 12px; border-radius:999px; letter-spacing:.5px;}
+  h1{font-size:21px; margin:10px 0 4px; line-height:1.35;}
+  .sub{color:var(--sub); font-size:14px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:22px; box-shadow:0 14px 40px rgba(0,0,0,.35);}
+  /* start */
+  .field{margin:14px 0;}
+  .field label{display:block; font-size:14px; color:var(--sub); margin-bottom:6px;}
+  input.name{width:100%; padding:13px 14px; border-radius:12px; border:1px solid var(--line);
+    background:#0b1426; color:var(--txt); font-size:16px;}
+  input.name:focus{outline:none; border-color:var(--accent);}
+  .btn{display:block; width:100%; padding:15px; border:none; border-radius:14px; cursor:pointer;
+    font-size:17px; font-weight:800; background:linear-gradient(90deg,var(--accent),var(--accent2));
+    color:#04263a; margin-top:10px; transition:transform .06s;}
+  .btn:active{transform:scale(.98);}
+  .btn.ghost{background:#334155; color:var(--txt);}
+  .hint{font-size:12.5px; color:var(--sub); text-align:center; margin-top:12px; line-height:1.7;}
+  .hint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
+    border-radius:6px; padding:1px 7px; font-size:11.5px; color:var(--accent);}
+  /* progress */
+  .pbar{height:8px; background:#0b1426; border-radius:99px; overflow:hidden; margin-bottom:16px;}
+  .pfill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0;
+    transition:width .3s;}
+  .qmeta{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+  .qno{font-weight:800; color:var(--accent); font-size:14px;}
+  .qtype{font-size:12px; color:var(--sub); background:#0b1426; padding:3px 10px; border-radius:99px;}
+  .qtext{font-size:18px; line-height:1.55; margin:6px 0 18px; font-weight:600; white-space:pre-wrap;}
+  .opts{display:flex; flex-direction:column; gap:10px;}
+  .opt{display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:13px;
+    background:var(--card2); border:2px solid transparent; cursor:pointer; font-size:16px;
+    transition:.12s;}
+  .opt:hover{border-color:#3b4d6b;}
+  .opt.sel{border-color:var(--accent); background:#15324a;}
+  .opt .num{width:26px; height:26px; flex:none; border-radius:8px; background:#0b1426;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px;
+    color:var(--accent);}
+  .opt.sel .num{background:var(--accent); color:#04263a;}
+  input.ans{width:100%; padding:14px; border-radius:12px; border:1px solid var(--line);
+    background:#0b1426; color:var(--txt); font-size:17px;}
+  input.ans:focus{outline:none; border-color:var(--accent);}
+  .navhint{text-align:center; font-size:12.5px; color:var(--sub); margin-top:14px;}
+  .navhint kbd{background:#0b1426; border:1px solid var(--line); border-bottom-width:2px;
+    border-radius:6px; padding:1px 7px; color:var(--accent);}
+  /* result */
+  .score-big{text-align:center; font-size:44px; font-weight:900; color:var(--accent); margin:6px 0;}
+  .score-sub{text-align:center; color:var(--sub); margin-bottom:18px;}
+  .rev{border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px;
+    background:#0b1426;}
+  .rev.correct{border-left:5px solid var(--good);}
+  .rev.wrong{border-left:5px solid var(--bad);}
+  .rev .rno{font-size:13px; font-weight:800; margin-bottom:6px;}
+  .rev.correct .rno{color:var(--good);} .rev.wrong .rno{color:var(--bad);}
+  .rev .q{font-size:15px; margin-bottom:8px; white-space:pre-wrap;}
+  .rev .line{font-size:14px; margin:3px 0;}
+  .rev .yours{color:#fda4af;} .rev .right{color:#86efac;}
+  .rev .exp{margin-top:8px; font-size:13.5px; color:#cbd5e1; line-height:1.6;
+    background:#111c33; border-radius:9px; padding:9px 11px;}
+  .outro{text-align:center; font-size:20px; font-weight:800; margin:22px 0 6px; color:var(--accent2);}
+  .copybox{background:#0b1426; border:1px dashed var(--line); border-radius:12px; padding:12px;
+    font-size:13px; color:var(--sub); white-space:pre-wrap; margin:12px 0; max-height:200px; overflow:auto;}
+  .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%);
+    background:var(--good); color:#03240f; padding:12px 22px; border-radius:99px; font-weight:800;
+    opacity:0; pointer-events:none; transition:.3s; font-size:14px;}
+  .toast.show{opacity:1;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="badge">Lesson 3 · 어휘</span>
+    <h1>Lesson 3 Vocabulary 변형문제 (Advanced)</h1>
+    <div class="sub">숭의중 2학년 · 지나티처 내신대비 변형문제</div>
+  </header>
+
+  <!-- START -->
+  <section id="start" class="card">
+    <div class="field">
+      <label>이름을 입력하세요</label>
+      <input class="name" id="nameInput" placeholder="예: 천율민" autocomplete="off">
+    </div>
+    <p class="sub" style="font-size:13.5px; line-height:1.6;">
+      총 <b id="qcount">0</b>문제예요. 한 문제씩 풀고 <b>모두 제출하면</b> 정답과 해설을 볼 수 있어요.
+      반복해서 풀면 자연스럽게 외워진답니다 💪
+    </p>
+    <button class="btn" id="startBtn">시작하기 ▶</button>
+    <p class="hint">
+      <kbd>Enter</kbd> 입력/다음 · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd>… 객관식 보기 선택
+    </p>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="card hidden">
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <div class="qmeta">
+      <span class="qno" id="qno"></span>
+      <span class="qtype" id="qtype"></span>
+    </div>
+    <div class="qtext" id="qtext"></div>
+    <div id="answerArea"></div>
+    <button class="btn" id="nextBtn" style="margin-top:18px;">다음 ▶</button>
+    <p class="navhint"><kbd>Enter</kbd> 로 다음 문제 · 객관식은 숫자키로 선택</p>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="card hidden">
+    <div class="score-big" id="scoreBig"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div id="review"></div>
+    <div class="outro">수고했습니당 ~~~ ㅎㅎㅎ</div>
+    <button class="btn" id="copyBtn">📋 지나티처에게 결과 보내기 (메시지 복사)</button>
+    <div class="copybox" id="copyPreview"></div>
+    <button class="btn ghost" id="retryBtn">다시 풀기 🔄</button>
+  </section>
+</div>
+<div class="toast" id="toast">복사됐어요! 카톡에 붙여넣기 하세요 ✅</div>
+
+<script>
+const QUIZ = [{"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a room with special equipment for doing scientific tests\"", "options": ["volcano", "lab", "ash", "crop"], "answer": 1, "exp": "과학 실험을 하는 특별한 장비가 있는 방 = lab (실험실)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"gray powder left after something is burned\"", "options": ["ash", "crop", "forecast", "coin"], "answer": 0, "exp": "무언가 탄 뒤 남는 회색 가루 = ash (재)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to break apart violently and suddenly\"", "options": ["invent", "set up", "explode", "forecast"], "answer": 2, "exp": "갑자기 격렬하게 터지다 = explode (폭발하다). 명사형 explosion(폭발)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to place something in position\"", "options": ["set up", "explode", "invent", "forecast"], "answer": 0, "exp": "무언가를 제자리에 두다·설치하다 = set up"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"to create or design something for the first time\"", "options": ["forecast", "invent", "explode", "set up"], "answer": 1, "exp": "처음으로 무언가를 만들어내다 = invent (발명하다)"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a statement about what will happen in the future\"", "options": ["forecast", "volcano", "necessity", "crop"], "answer": 0, "exp": "미래에 일어날 일에 대한 진술 = forecast (예보, 예측)"}, {"type": "mc", "q": "영영풀이에 알맞은 표현은? \"because of something (그 결과로)\"", "options": ["set up", "as a result", "world-famous", "explode"], "answer": 1, "exp": "as a result = 그 결과로, ~때문에"}, {"type": "mc", "q": "영영풀이에 알맞은 단어는? \"a mountain with a hole that can send out lava, ash, and gas\"", "options": ["crop", "lab", "volcano", "forecast"], "answer": 2, "exp": "용암·재·가스를 내뿜는 구멍이 있는 산 = volcano (화산)"}, {"type": "mc", "q": "빈칸에 알맞은 말은? The ______ toast tasted bitter.", "options": ["world-famous", "burnt", "crop", "necessity"], "answer": 1, "exp": "burnt = 탄, 그을린. 탄 토스트는 쓴맛이 났다."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Haruki Murakami is a ______ writer.", "options": ["burnt", "crop", "world-famous", "necessity"], "answer": 2, "exp": "world-famous = 세계적으로 유명한. 무라카미 하루키는 세계적으로 유명한 작가다."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Rice is an important ______ in many Asian countries.", "options": ["crop", "necessity", "forecast", "ash"], "answer": 0, "exp": "crop = 농작물. 쌀은 많은 아시아 국가에서 중요한 농작물이다."}, {"type": "mc", "q": "빈칸에 알맞은 말은? Clean water is a ______ in every country.", "options": ["crop", "burnt", "necessity", "forecast"], "answer": 2, "exp": "necessity = 필수품, 필요. 깨끗한 물은 모든 나라에서 필수다."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (폭발)\n그 폭발로 큰 불이 났다. → The ______ made a big fire.", "accept": ["explosion"], "exp": "explosion = 폭발 (동사 explode의 명사형). The explosion made a big fire."}, {"type": "short", "q": "빈칸을 채우세요. (그 당시에)\n그 당시에, 사람들은 스마트폰이 없었다. → ______ ______ ______, people didn't have smartphones.", "accept": ["at that time"], "exp": "at that time = 그 당시에. At that time, people didn't have smartphones."}, {"type": "short", "q": "빈칸에 알맞은 단어를 쓰세요. (~하는 동안)\n그들은 폭풍이 치는 동안 집 안에 머물렀다. → They stayed inside the house ______ the storm.", "accept": ["during"], "exp": "during + 명사 = ~하는 동안. during the storm = 폭풍이 치는 동안."}];
+const TITLE = "Lesson 3 Vocabulary 변형문제 (Advanced)";
+
+const $=id=>document.getElementById(id);
+let idx=0, answers=[], studentName="";
+
+function norm(s){
+  return (s||"").toLowerCase().trim()
+    .replace(/[.,!?"'`’]/g,"").replace(/\s+/g," ");
+}
+function isShortCorrect(q,val){
+  const n=norm(val);
+  if(!n) return false;
+  return (q.accept||[]).some(a=>norm(a)===n);
+}
+
+$("qcount").textContent=QUIZ.length;
+
+$("startBtn").onclick=start;
+$("nameInput").addEventListener("keydown",e=>{ if(e.key==="Enter") start(); });
+
+function start(){
+  const nm=$("nameInput").value.trim();
+  studentName = nm || "학생";
+  idx=0; answers=new Array(QUIZ.length).fill(null);
+  $("start").classList.add("hidden");
+  $("result").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+  render();
+}
+
+function render(){
+  const q=QUIZ[idx];
+  $("pfill").style.width=((idx)/QUIZ.length*100)+"%";
+  $("qno").textContent=`${idx+1} / ${QUIZ.length}`;
+  $("qtype").textContent = q.type==="mc" ? "객관식" : "주관식";
+  $("qtext").textContent=q.q;
+  const area=$("answerArea"); area.innerHTML="";
+  if(q.type==="mc"){
+    const box=document.createElement("div"); box.className="opts";
+    q.options.forEach((op,i)=>{
+      const d=document.createElement("div"); d.className="opt"; d.dataset.i=i;
+      if(answers[idx]===i) d.classList.add("sel");
+      d.innerHTML=`<span class="num">${i+1}</span><span>${op}</span>`;
+      d.onclick=()=>selectMc(i);
+      box.appendChild(d);
+    });
+    area.appendChild(box);
+  }else{
+    const inp=document.createElement("input");
+    inp.className="ans"; inp.id="shortInput"; inp.placeholder="여기에 영어로 답을 쓰세요";
+    inp.autocomplete="off"; inp.value = answers[idx]||"";
+    area.appendChild(inp);
+    setTimeout(()=>inp.focus(),30);
+  }
+  $("nextBtn").textContent = (idx===QUIZ.length-1) ? "결과 보기 ▶" : "다음 ▶";
+}
+
+function selectMc(i){
+  answers[idx]=i;
+  document.querySelectorAll(".opt").forEach(o=>{
+    o.classList.toggle("sel", parseInt(o.dataset.i)===i);
+  });
+}
+
+function saveShort(){
+  const inp=$("shortInput");
+  if(inp) answers[idx]=inp.value;
+}
+
+function next(){
+  const q=QUIZ[idx];
+  if(q.type==="short") saveShort();
+  if(idx<QUIZ.length-1){ idx++; render(); }
+  else finish();
+}
+$("nextBtn").onclick=next;
+
+document.addEventListener("keydown",e=>{
+  if(!$("quiz").classList.contains("hidden")){
+    const q=QUIZ[idx];
+    if(q.type==="mc" && /^[1-9]$/.test(e.key)){
+      const n=parseInt(e.key);
+      if(n<=q.options.length){ selectMc(n-1); }
+    }
+    if(e.key==="Enter"){ e.preventDefault(); next(); }
+  }
+});
+
+function finish(){
+  let correct=0;
+  const rev=$("review"); rev.innerHTML="";
+  QUIZ.forEach((q,i)=>{
+    let ok=false, yours="";
+    if(q.type==="mc"){
+      const a=answers[i];
+      yours = (a==null)?"(무응답)":`${a+1}. ${q.options[a]}`;
+      ok = (a===q.answer);
+    }else{
+      yours = answers[i]? answers[i] : "(무응답)";
+      ok = isShortCorrect(q, answers[i]);
+    }
+    if(ok) correct++;
+    const div=document.createElement("div");
+    div.className="rev "+(ok?"correct":"wrong");
+    let rightTxt = q.type==="mc" ? `${q.answer+1}. ${q.options[q.answer]}` : q.accept[0];
+    div.innerHTML = `<div class="rno">${i+1}번 ${ok?"⭕ 정답":"❌ 오답"}</div>
+      <div class="q">${q.q}</div>`+
+      (ok? `<div class="line right">✔ 내 답: ${yours}</div>`
+         : `<div class="line yours">✖ 내 답: ${yours}</div>
+            <div class="line right">정답: ${rightTxt}</div>`)+
+      `<div class="exp">💡 ${q.exp}</div>`;
+    rev.appendChild(div);
+  });
+  const total=QUIZ.length;
+  const score=Math.round(correct/total*100);
+  $("scoreBig").textContent=`${correct} / ${total}`;
+  $("scoreSub").textContent=`${score}점 · ${studentName} 학생`;
+  $("quiz").classList.add("hidden");
+  $("result").classList.remove("hidden");
+  window.scrollTo(0,0);
+  buildCopy(correct,total,score);
+}
+
+let copyText="";
+function buildCopy(correct,total,score){
+  const wrongs=[];
+  QUIZ.forEach((q,i)=>{
+    let ok = q.type==="mc" ? (answers[i]===q.answer) : isShortCorrect(q,answers[i]);
+    if(!ok) wrongs.push(i+1);
+  });
+  copyText =
+`[지나티처 결과 보고 📨]
+프린트: ${TITLE}
+이름: ${studentName}
+점수: ${correct}/${total} (${score}점)
+틀린 문제: ${wrongs.length? wrongs.join(", ")+"번" : "없음! 만점이에요 🎉"}
+
+수고했습니당 ~~~ ㅎㅎㅎ`;
+  $("copyPreview").textContent=copyText;
+}
+
+$("copyBtn").onclick=async()=>{
+  try{ await navigator.clipboard.writeText(copyText); }
+  catch(e){
+    const t=document.createElement("textarea"); t.value=copyText;
+    document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
+  }
+  const toast=$("toast"); toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),1800);
+};
+
+$("retryBtn").onclick=()=>{
+  $("result").classList.add("hidden");
+  $("start").classList.remove("hidden");
+  window.scrollTo(0,0);
+};
+</script>
+</body>
+</html>
